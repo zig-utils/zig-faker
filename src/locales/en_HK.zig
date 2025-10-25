@@ -1,14 +1,36 @@
-// English (en_HK) locale
+// English (Hong Kong) locale
 const locale = @import("../locale.zig");
 const en_base = @import("en.zig").en;
 
+const city_hk = [_][]const u8{
+    "Central", "Wan Chai", "Causeway Bay", "Tsim Sha Tsui", "Mong Kok",
+    "Yau Ma Tei", "Sha Tin", "Tuen Mun", "Kwun Tong", "Kowloon Bay",
+};
+
 pub const en_HK: locale.LocaleDefinition = .{
-    .title = "English (en_HK)",
+    .title = "English (Hong Kong)",
     .person = en_base.person,
-    .address = en_base.address,
+    .address = locale.AddressLocale{
+        .street_name = en_base.address.street_name,
+        .city = &city_hk,
+        .state = &[_][]const u8{"Hong Kong Island", "Kowloon", "New Territories"},
+        .state_abbr = &[_][]const u8{"HKI", "KLN", "NT"},
+        .country = &[_][]const u8{"Hong Kong"},
+        .postal_code_format = &[_][]const u8{""},
+        .building_number = en_base.address.building_number,
+        .direction = en_base.address.direction,
+        .country_weights = null,
+        .state_weights = null,
+    },
     .company = en_base.company,
-    .internet = en_base.internet,
-    .phone = en_base.phone,
+    .internet = locale.InternetLocale{
+        .domain_suffix = &[_][]const u8{ ".hk", ".com.hk", ".com", ".net" },
+        .domain_word = &[_][]const u8{ "tech", "web", "net", "online", "digital" },
+        .free_email = &[_][]const u8{ "gmail.com", "yahoo.com.hk", "hotmail.com" },
+    },
+    .phone = locale.PhoneLocale{
+        .format = &[_][]const u8{ "+852 #### ####", "#### ####" },
+    },
     .food = en_base.food,
     .animal = en_base.animal,
 };
