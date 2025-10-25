@@ -5,10 +5,86 @@ pub const Random = @import("random.zig").Random;
 pub const locale = @import("locale.zig");
 pub const LocaleDefinition = locale.LocaleDefinition;
 
+// Locale utilities and loading
+pub const locale_utils = @import("locale_utils.zig");
+pub const LocaleInfo = locale_utils.LocaleInfo;
+pub const LocaleLoader = @import("locale_loader.zig").LocaleLoader;
+
 // Locale data
 pub const locales = struct {
+    // English - base + variants
     pub const en = @import("locales/en.zig").en;
+    pub const en_AU = @import("locales/en_AU.zig").en_AU;
+    pub const en_CA = @import("locales/en_CA.zig").en_CA;
+    pub const en_GB = @import("locales/en_GB.zig").en_GB;
+    pub const en_GH = @import("locales/en_GH.zig").en_GH;
+    pub const en_HK = @import("locales/en_HK.zig").en_HK;
+    pub const en_IE = @import("locales/en_IE.zig").en_IE;
+    pub const en_IN = @import("locales/en_IN.zig").en_IN;
+    pub const en_NG = @import("locales/en_NG.zig").en_NG;
+    pub const en_US = @import("locales/en_US.zig").en_US;
+    pub const en_ZA = @import("locales/en_ZA.zig").en_ZA;
+    // Spanish - base + variants
+    pub const es = @import("locales/es.zig").es;
+    pub const es_ES = @import("locales/es_ES.zig").es_ES;
+    pub const es_MX = @import("locales/es_MX.zig").es_MX;
+    // German - base + variants
+    pub const de = @import("locales/de.zig").de;
+    pub const de_AT = @import("locales/de_AT.zig").de_AT;
+    pub const de_CH = @import("locales/de_CH.zig").de_CH;
+    pub const de_DE = @import("locales/de_DE.zig").de_DE;
+    // French - base + variants
+    pub const fr = @import("locales/fr.zig").fr;
+    pub const fr_BE = @import("locales/fr_BE.zig").fr_BE;
+    pub const fr_CA = @import("locales/fr_CA.zig").fr_CA;
+    pub const fr_CH = @import("locales/fr_CH.zig").fr_CH;
+    pub const fr_FR = @import("locales/fr_FR.zig").fr_FR;
+    pub const fr_LU = @import("locales/fr_LU.zig").fr_LU;
+    pub const fr_SN = @import("locales/fr_SN.zig").fr_SN;
+    // Portuguese - base + variants
+    pub const pt = @import("locales/pt.zig").pt;
+    pub const pt_BR = @import("locales/pt_BR.zig").pt_BR;
+    pub const pt_MZ = @import("locales/pt_MZ.zig").pt_MZ;
+    pub const pt_PT = @import("locales/pt_PT.zig").pt_PT;
+    // Chinese - base + variants
+    pub const zh = @import("locales/zh.zig").zh;
+    pub const zh_CN = @import("locales/zh_CN.zig").zh_CN;
+    pub const zh_TW = @import("locales/zh_TW.zig").zh_TW;
+    // Afrikaans - base + variant
+    pub const af = @import("locales/af.zig").af;
+    pub const af_ZA = @import("locales/af_ZA.zig").af_ZA;
+    // Zulu - base + variant
+    pub const zu = @import("locales/zu.zig").zu;
+    pub const zu_ZA = @import("locales/zu_ZA.zig").zu_ZA;
+    // Other base locales
+    pub const it = @import("locales/it.zig").it;
+    pub const nl = @import("locales/nl.zig").nl;
+    pub const ja = @import("locales/ja.zig").ja;
+    pub const ko = @import("locales/ko.zig").ko;
+    pub const uk = @import("locales/uk.zig").uk;
+    pub const pl = @import("locales/pl.zig").pl;
+    pub const sv = @import("locales/sv.zig").sv;
+    pub const no = @import("locales/no.zig").no;
+    pub const da = @import("locales/da.zig").da;
+    pub const fi = @import("locales/fi.zig").fi;
+    pub const cs = @import("locales/cs.zig").cs;
+    pub const tr = @import("locales/tr.zig").tr;
+    pub const ar = @import("locales/ar.zig").ar;
+    pub const he = @import("locales/he.zig").he;
+    pub const hi = @import("locales/hi.zig").hi;
+    pub const az = @import("locales/az.zig").az;
+    pub const eo = @import("locales/eo.zig").eo;
+    pub const fa = @import("locales/fa.zig").fa;
+    pub const tl = @import("locales/tl.zig").tl;
 };
+
+// Exported locale utility functions
+pub const parseLocale = locale_utils.parseLocale;
+pub const getLocaleFallbackChain = locale_utils.getLocaleFallbackChain;
+pub const freeLocaleFallbackChain = locale_utils.freeLocaleFallbackChain;
+pub const detectSystemLocale = locale_utils.detectSystemLocale;
+pub const mergeLocaleDefinitions = locale_utils.mergeLocaleDefinitions;
+pub const isLocaleAvailable = locale_utils.isLocaleAvailable;
 
 // Modules
 const PersonModule = @import("modules/person.zig").Person;
@@ -37,11 +113,19 @@ const DatabaseModule = @import("modules/database.zig").Database;
 const GitModule = @import("modules/git.zig").Git;
 const ImageModule = @import("modules/image.zig").Image;
 const HelpersModule = @import("modules/helpers.zig").Helpers;
+const ValidationModule = @import("modules/validation.zig").Validation;
 
 pub const PersonOptions = @import("modules/person.zig").PersonOptions;
 pub const FullNameOptions = @import("modules/person.zig").FullNameOptions;
 pub const StreetAddressOptions = @import("modules/address.zig").StreetAddressOptions;
 pub const Gender = locale.Gender;
+
+// Validation exports
+pub const ValidationMode = @import("modules/validation.zig").ValidationMode;
+pub const ValidationResult = @import("modules/validation.zig").ValidationResult;
+pub const ValidationRule = @import("modules/validation.zig").ValidationRule;
+pub const ValidatorType = @import("modules/validation.zig").ValidatorType;
+pub const ValidatorFn = @import("modules/validation.zig").ValidatorFn;
 
 /// Main Faker struct providing access to all data generation modules
 pub const Faker = struct {
@@ -76,6 +160,7 @@ pub const Faker = struct {
     git: GitModule,
     image: ImageModule,
     helpers: HelpersModule,
+    validation: ValidationModule,
 
     /// Initialize Faker with optional seed and locale
     pub fn init(allocator: std.mem.Allocator, seed_value: ?u64, locale_def: ?*const LocaleDefinition) Faker {
@@ -110,6 +195,7 @@ pub const Faker = struct {
             .git = undefined,
             .image = undefined,
             .helpers = undefined,
+            .validation = undefined,
         };
 
         // Initialize modules (no longer need to pass random pointer)
@@ -139,6 +225,7 @@ pub const Faker = struct {
         faker.git = GitModule.init(allocator);
         faker.image = ImageModule.init(allocator);
         faker.helpers = HelpersModule.init(allocator);
+        faker.validation = ValidationModule.init(allocator, .strict);
 
         return faker;
     }

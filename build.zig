@@ -66,4 +66,22 @@ pub fn build(b: *std.Build) void {
     const run_benchmark = b.addRunArtifact(benchmark);
     const benchmark_step = b.step("benchmark", "Run benchmarks");
     benchmark_step.dependOn(&run_benchmark.step);
+
+    // Comprehensive demo
+    const demo_module = b.createModule(.{
+        .root_source_file = b.path("examples/comprehensive_demo.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    demo_module.addImport("faker", root_module);
+
+    const demo = b.addExecutable(.{
+        .name = "comprehensive_demo",
+        .root_module = demo_module,
+    });
+    b.installArtifact(demo);
+
+    const run_demo = b.addRunArtifact(demo);
+    const demo_step = b.step("demo", "Run comprehensive demo");
+    demo_step.dependOn(&run_demo.step);
 }

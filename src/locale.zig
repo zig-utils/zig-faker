@@ -15,6 +15,11 @@ pub const PersonLocale = struct {
     suffix: []const []const u8,
     gender: []const []const u8,
     job_title: []const []const u8,
+
+    // Optional: Weights for realistic name frequency
+    first_name_male_weights: ?[]const f64 = null,
+    first_name_female_weights: ?[]const f64 = null,
+    last_name_weights: ?[]const f64 = null,
 };
 
 pub const AddressLocale = struct {
@@ -26,6 +31,10 @@ pub const AddressLocale = struct {
     postal_code_format: []const []const u8,
     building_number: []const []const u8,
     direction: []const []const u8,
+
+    // Optional: Weights for realistic distribution
+    country_weights: ?[]const f64 = null,
+    state_weights: ?[]const f64 = null,
 };
 
 pub const CompanyLocale = struct {

@@ -90,4 +90,23 @@ pub const Address = struct {
             .{ street, city_name, state_abbr, zip },
         );
     }
+
+    // ==================== Weighted Selection Methods ====================
+
+    /// Generate a weighted country name (uses population data if available)
+    /// More populous countries like China and India appear more frequently
+    pub fn countryWeighted(self: *Address, random: *Random) ![]const u8 {
+        if (self.locale.address.country_weights) |weights| {
+            const Helpers = @import("helpers.zig").Helpers;
+            var helpers = Helpers.init(self.allocator);
+            return helpers.weightedArrayElement(
+                []const u8,
+                random,
+                self.locale.address.country,
+                weights
+            );
+        } else {
+            return random.arrayElement([]const u8, self.locale.address.country);
+        }
+    }
 };

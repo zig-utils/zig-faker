@@ -269,4 +269,42 @@ pub const Helpers = struct {
         }
         return result;
     }
+
+    // ==================== Realistic Distribution Helpers ====================
+
+    /// Generate a realistic human age using normal distribution
+    /// Default: mean=35, std_dev=15, clamped to 0-100
+    pub fn realisticAge(self: *Helpers, random: *Random, mean: ?f64, std_dev: ?f64) i32 {
+        const age_mean = mean orelse 35.0;
+        const age_std = std_dev orelse 15.0;
+
+        const raw_age = self.normalDistribution(random, age_mean, age_std);
+        const clamped = self.clamp(f64, raw_age, 0.0, 100.0);
+
+        return @intFromFloat(clamped);
+    }
+
+    /// Generate a realistic adult age (18-80)
+    pub fn realisticAdultAge(self: *Helpers, random: *Random) i32 {
+        const raw_age = self.normalDistribution(random, 40.0, 12.0);
+        const clamped = self.clamp(f64, raw_age, 18.0, 80.0);
+
+        return @intFromFloat(clamped);
+    }
+
+    /// Generate a realistic child age (0-17)
+    pub fn realisticChildAge(self: *Helpers, random: *Random) i32 {
+        const raw_age = self.normalDistribution(random, 8.5, 5.0);
+        const clamped = self.clamp(f64, raw_age, 0.0, 17.0);
+
+        return @intFromFloat(clamped);
+    }
+
+    /// Generate a realistic senior age (65-100)
+    pub fn realisticSeniorAge(self: *Helpers, random: *Random) i32 {
+        const raw_age = self.normalDistribution(random, 75.0, 7.0);
+        const clamped = self.clamp(f64, raw_age, 65.0, 100.0);
+
+        return @intFromFloat(clamped);
+    }
 };

@@ -421,6 +421,94 @@ const animal_wild = [_][]const u8{
     "Raccoon",      "Skunk",        "Badger",       "Meerkat",      "Prairie Dog",
 };
 
+// Realistic name frequency weights (higher = more common)
+// Based on actual name popularity data - top names are much more common
+const first_name_male_weights = [_]f64{
+    // Top 10 names - very common (3.0-2.0)
+    3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1,
+    // Names 11-30 - common (2.0-1.2)
+    2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1,
+    1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1,
+    // Names 31-60 - less common (1.0-0.5)
+    0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09,
+    0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08,
+    // Names 51-80 - uncommon (0.5-0.1)
+    0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07,
+    0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07, 0.06,
+    // Remaining names - rare (0.1)
+    0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+    0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+};
+
+const first_name_female_weights = [_]f64{
+    // Top 10 names - very common
+    3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1,
+    // Names 11-30 - common
+    2.0, 1.9, 1.8, 1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1,
+    1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1,
+    // Names 31-60 - less common
+    0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09,
+    0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08,
+    // Names 51-80 - uncommon
+    0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07,
+    0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07, 0.06,
+    // Remaining names - rare
+    0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+    0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+};
+
+const last_name_weights = [_]f64{
+    // Top 10 surnames - very common (Smith, Johnson, etc.)
+    4.0, 3.5, 3.0, 2.8, 2.6, 2.4, 2.2, 2.0, 1.9, 1.8,
+    // Names 11-30 - common
+    1.7, 1.6, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0, 0.9, 0.8,
+    0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07,
+    // Names 31-60 - less common
+    0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07, 0.06,
+    0.5, 0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07, 0.06, 0.05,
+    // Names 51-80 - uncommon
+    0.4, 0.3, 0.2, 0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04,
+    0.3, 0.2, 0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03,
+    // Remaining names - rare
+    0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+    0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+};
+
+// Country distribution weights (based on world population)
+const country_weights = [_]f64{
+    // Major countries by population
+    10.0,  // United States
+    18.5,  // China
+    17.5,  // India
+    3.4,   // Indonesia
+    2.7,   // Brazil
+    2.1,   // Pakistan
+    2.0,   // Nigeria
+    1.7,   // Bangladesh
+    1.6,   // Russia
+    1.3,   // Mexico
+    1.3,   // Japan
+    1.1,   // Philippines
+    1.0,   // Egypt
+    1.0,   // Vietnam
+    0.9,   // Germany
+    0.9,   // Iran
+    0.8,   // Turkey
+    0.7,   // Thailand
+    0.7,   // United Kingdom
+    0.7,   // France
+    0.7,   // Italy
+    0.6,   // South Africa
+    0.6,   // South Korea
+    0.6,   // Spain
+    0.5,   // Canada
+    0.5,   // Australia
+    0.3,   // Netherlands
+    0.2,   // Sweden
+    0.2,   // Norway
+    0.2,   // Denmark
+};
+
 pub const en: LocaleDefinition = .{
     .title = "English",
     .person = PersonLocale{
@@ -432,6 +520,9 @@ pub const en: LocaleDefinition = .{
         .suffix = &suffix,
         .gender = &gender,
         .job_title = &job_title,
+        .first_name_male_weights = &first_name_male_weights,
+        .first_name_female_weights = &first_name_female_weights,
+        .last_name_weights = &last_name_weights,
     },
     .address = AddressLocale{
         .street_name = &street_name,
@@ -442,6 +533,7 @@ pub const en: LocaleDefinition = .{
         .postal_code_format = &postal_code_format,
         .building_number = &building_number,
         .direction = &direction,
+        .country_weights = &country_weights,
     },
     .company = CompanyLocale{
         .name = &company_name,
