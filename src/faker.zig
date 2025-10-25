@@ -36,6 +36,7 @@ const FinanceModule = @import("modules/finance.zig").Finance;
 const DatabaseModule = @import("modules/database.zig").Database;
 const GitModule = @import("modules/git.zig").Git;
 const ImageModule = @import("modules/image.zig").Image;
+const HelpersModule = @import("modules/helpers.zig").Helpers;
 
 pub const PersonOptions = @import("modules/person.zig").PersonOptions;
 pub const FullNameOptions = @import("modules/person.zig").FullNameOptions;
@@ -74,6 +75,7 @@ pub const Faker = struct {
     database: DatabaseModule,
     git: GitModule,
     image: ImageModule,
+    helpers: HelpersModule,
 
     /// Initialize Faker with optional seed and locale
     pub fn init(allocator: std.mem.Allocator, seed_value: ?u64, locale_def: ?*const LocaleDefinition) Faker {
@@ -107,6 +109,7 @@ pub const Faker = struct {
             .database = undefined,
             .git = undefined,
             .image = undefined,
+            .helpers = undefined,
         };
 
         // Initialize modules (no longer need to pass random pointer)
@@ -135,6 +138,7 @@ pub const Faker = struct {
         faker.database = DatabaseModule.init(allocator);
         faker.git = GitModule.init(allocator);
         faker.image = ImageModule.init(allocator);
+        faker.helpers = HelpersModule.init(allocator);
 
         return faker;
     }
@@ -685,4 +689,66 @@ test "image module" {
     const filename = try faker.image.fileName(&faker.random);
     defer allocator.free(filename);
     try std.testing.expect(filename.len > 0);
+}
+
+test "helpers module - boolean and maybe" {
+    const allocator = std.testing.allocator;
+    var faker = Faker.init(allocator, 12345, null);
+
+    const bool_val = faker.helpers.boolean(&faker.random);
+    try std.testing.expect(bool_val == true or bool_val == false);
+
+    const maybe_val = faker.helpers.maybe(&faker.random, 0.5);
+    try std.testing.expect(maybe_val == true or maybe_val == false);
+
+    const always_true = faker.helpers.maybe(&faker.random, 1.0);
+    try std.testing.expect(always_true == true);
+}
+
+test "helpers module - array utilities" {
+    const allocator = std.testing.allocator;
+    var faker = Faker.init(allocator, 12345, null);
+
+    const items = [_][]const u8{ "a", "b", "c", "d", "e" };
+
+    // Array elements with replacement
+    const elements = try faker.helpers.arrayElements([]const u8, &faker.random, &items, 3);
+    defer allocator.free(elements);
+    try std.testing.expectEqual(@as(usize, 3), elements.len);
+
+    // Unique elements
+    const unique = try faker.helpers.arrayElementsUnique([]const u8, &faker.random, &items, 3);
+    defer allocator.free(unique);
+    try std.testing.expectEqual(@as(usize, 3), unique.len);
+}
+
+test "helpers module - weighted selection" {
+    const allocator = std.testing.allocator;
+    var faker = Faker.init(allocator, 12345, null);
+
+    const items = [_][]const u8{ "rare", "common", "very_common" };
+    const weights = [_]f64{ 0.1, 0.3, 0.6 };
+
+    const selected = try faker.helpers.weightedArrayElement([]const u8, &faker.random, &items, &weights);
+    try std.testing.expect(selected.len > 0);
+}
+
+test "helpers module - slugify" {
+    const allocator = std.testing.allocator;
+    var faker = Faker.init(allocator, 12345, null);
+
+    const slug = try faker.helpers.slugify("Hello World Test");
+    defer allocator.free(slug);
+    try std.testing.expectEqualStrings("hello-world-test", slug);
+}
+
+test "helpers module - sequence" {
+    const allocator = std.testing.allocator;
+    var faker = Faker.init(allocator, 12345, null);
+
+    const seq = try faker.helpers.sequence(1, 5, 1);
+    defer allocator.free(seq);
+    try std.testing.expectEqual(@as(usize, 5), seq.len);
+    try std.testing.expectEqual(@as(i64, 1), seq[0]);
+    try std.testing.expectEqual(@as(i64, 5), seq[4]);
 }

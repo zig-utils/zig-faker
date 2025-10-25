@@ -197,64 +197,228 @@ const phone_format = [_][]const u8{
 };
 
 const food_dish = [_][]const u8{
-    "Pizza",      "Burger",     "Sushi",      "Pasta",      "Tacos",
-    "Salad",      "Steak",      "Chicken",    "Salmon",     "Soup",
-    "Sandwich",   "Burrito",    "Curry",      "Noodles",    "Rice Bowl",
-    "Ramen",      "Pho",        "Pad Thai",   "Stir Fry",   "Dumplings",
+    // American & International
+    "Pizza",           "Burger",          "Sushi",           "Pasta",           "Tacos",
+    "Salad",           "Steak",           "Chicken",         "Salmon",          "Soup",
+    "Sandwich",        "Burrito",         "Curry",           "Noodles",         "Rice Bowl",
+    "Ramen",           "Pho",             "Pad Thai",        "Stir Fry",        "Dumplings",
+    // Italian
+    "Lasagna",         "Risotto",         "Carbonara",       "Ravioli",         "Gnocchi",
+    "Pesto Pasta",     "Margherita Pizza", "Calzone",        "Tiramisu",        "Minestrone",
+    "Bruschetta",      "Caprese Salad",   "Osso Buco",       "Saltimbocca",     "Arancini",
+    // Asian
+    "Fried Rice",      "Lo Mein",         "Chow Mein",       "Spring Rolls",    "Egg Rolls",
+    "Wonton Soup",     "Hot Pot",         "Bibimbap",        "Bulgogi",         "Kimchi Stew",
+    "Tempura",         "Teriyaki",        "Udon",            "Yakisoba",        "Onigiri",
+    "Banh Mi",         "Tom Yum",         "Laksa",           "Satay",           "Rendang",
+    // Mexican & Latin
+    "Enchiladas",      "Quesadilla",      "Fajitas",         "Tamales",         "Nachos",
+    "Guacamole",       "Ceviche",         "Empanadas",       "Churros",         "Mole",
+    "Tostadas",        "Pozole",          "Carnitas",        "Barbacoa",        "Chile Relleno",
+    // Middle Eastern & Mediterranean
+    "Falafel",         "Hummus",          "Shawarma",        "Kebab",           "Gyro",
+    "Tabbouleh",       "Baba Ganoush",    "Moussaka",        "Dolma",           "Couscous",
+    "Tagine",          "Shakshuka",       "Spanakopita",     "Baklava",         "Tzatziki",
+    // Indian
+    "Tikka Masala",    "Vindaloo",        "Korma",           "Biryani",         "Samosa",
+    "Naan",            "Dal",             "Paneer",          "Tandoori",        "Chutney",
+    // American Classics
+    "Mac and Cheese",  "Meatloaf",        "BBQ Ribs",        "Fried Chicken",   "Hot Dog",
+    "Chili",           "Jambalaya",       "Gumbo",           "Clam Chowder",    "Cornbread",
+    "Mashed Potatoes", "Coleslaw",        "Biscuits",        "Pancakes",        "Waffles",
+    // European
+    "Fish and Chips",  "Shepherd's Pie",  "Bangers and Mash", "Beef Wellington", "Yorkshire Pudding",
+    "Paella",          "Gazpacho",        "Schnitzel",       "Sauerbraten",     "Rouladen",
+    "Quiche",          "Ratatouille",     "Bouillabaisse",   "Cassoulet",       "Fondue",
+    // Breakfast
+    "Eggs Benedict",   "Omelette",        "French Toast",    "Crepes",          "Granola",
+    "Bagel",           "Croissant",       "Muffin",          "Scone",           "Danish",
 };
 
 const food_ingredient = [_][]const u8{
-    "Tomato",  "Onion",   "Garlic",  "Ginger",  "Pepper",  "Salt",    "Sugar",   "Flour",
-    "Butter",  "Oil",     "Milk",    "Eggs",    "Cheese",  "Cream",   "Yogurt",  "Rice",
-    "Pasta",   "Bread",   "Potato",  "Carrot",  "Celery",  "Lettuce", "Spinach", "Basil",
+    // Basics
+    "Tomato",      "Onion",       "Garlic",      "Ginger",      "Pepper",      "Salt",        "Sugar",       "Flour",
+    "Butter",      "Oil",         "Milk",        "Eggs",        "Cheese",      "Cream",       "Yogurt",      "Rice",
+    "Pasta",       "Bread",       "Potato",      "Carrot",      "Celery",      "Lettuce",     "Spinach",     "Basil",
+    // Dairy & Proteins
+    "Mozzarella",  "Parmesan",    "Cheddar",     "Feta",        "Goat Cheese", "Blue Cheese", "Ricotta",     "Brie",
+    "Sour Cream",  "Buttermilk",  "Heavy Cream", "Half and Half", "Whey",      "Cottage Cheese", "Cream Cheese", "Mascarpone",
+    "Chicken",     "Beef",        "Pork",        "Lamb",        "Turkey",      "Duck",        "Venison",     "Veal",
+    "Salmon",      "Tuna",        "Cod",         "Halibut",     "Shrimp",      "Crab",        "Lobster",     "Scallops",
+    "Bacon",       "Ham",         "Sausage",     "Salami",      "Prosciutto",  "Chorizo",     "Pastrami",    "Pepperoni",
+    // Vegetables
+    "Broccoli",    "Cauliflower", "Cabbage",     "Kale",        "Bok Choy",    "Brussels Sprouts", "Asparagus", "Artichoke",
+    "Cucumber",    "Zucchini",    "Eggplant",    "Squash",      "Pumpkin",     "Bell Pepper", "Jalapeño",    "Habanero",
+    "Mushroom",    "Corn",        "Peas",        "Green Beans", "Lima Beans",  "Edamame",     "Snow Peas",   "Chickpeas",
+    "Lentils",     "Black Beans", "Kidney Beans", "Pinto Beans", "Navy Beans", "Soybeans",    "Tofu",        "Tempeh",
+    "Radish",      "Turnip",      "Beet",        "Parsnip",     "Rutabaga",    "Sweet Potato", "Yam",        "Leek",
+    "Scallion",    "Shallot",     "Chives",      "Fennel",      "Chard",       "Collard Greens", "Arugula",  "Watercress",
+    // Grains & Starches
+    "Quinoa",      "Couscous",    "Bulgur",      "Barley",      "Oats",        "Rye",         "Wheat",       "Cornmeal",
+    "Polenta",     "Semolina",    "Farro",       "Millet",      "Amaranth",    "Buckwheat",   "Wild Rice",   "Brown Rice",
+    "Basmati",     "Jasmine Rice", "Arborio",    "Sushi Rice",  "Noodles",     "Spaghetti",   "Fettuccine",  "Penne",
+    // Seasonings & Condiments
+    "Oregano",     "Thyme",       "Rosemary",    "Sage",        "Parsley",     "Cilantro",    "Dill",        "Mint",
+    "Bay Leaf",    "Tarragon",    "Marjoram",    "Chervil",     "Savory",      "Lemongrass",  "Cardamom",    "Clove",
+    "Nutmeg",      "Cinnamon",    "Allspice",    "Vanilla",     "Saffron",     "Turmeric",    "Cumin",       "Coriander",
+    "Paprika",     "Cayenne",     "Chili Powder", "Curry Powder", "Mustard",   "Horseradish", "Wasabi",      "Sriracha",
+    "Soy Sauce",   "Fish Sauce",  "Oyster Sauce", "Hoisin",     "Teriyaki",    "Vinegar",     "Balsamic",    "Wine",
+    "Stock",       "Broth",       "Bouillon",    "Tomato Paste", "Tomato Sauce", "Salsa",     "Pesto",       "Tahini",
 };
 
 const food_fruit = [_][]const u8{
-    "Apple",   "Banana",  "Orange",  "Grape",   "Strawberry", "Blueberry", "Raspberry", "Blackberry",
-    "Mango",   "Pineapple", "Watermelon", "Melon", "Peach", "Pear",   "Plum",    "Cherry",
-    "Lemon",   "Lime",    "Kiwi",    "Papaya",  "Coconut",  "Avocado",
+    // Common Fruits
+    "Apple",       "Banana",      "Orange",      "Grape",       "Strawberry",  "Blueberry",   "Raspberry",   "Blackberry",
+    "Mango",       "Pineapple",   "Watermelon",  "Melon",       "Peach",       "Pear",        "Plum",        "Cherry",
+    "Lemon",       "Lime",        "Kiwi",        "Papaya",      "Coconut",     "Avocado",
+    // Citrus
+    "Grapefruit",  "Tangerine",   "Clementine",  "Mandarin",    "Blood Orange", "Pomelo",     "Yuzu",        "Kumquat",
+    // Berries
+    "Cranberry",   "Gooseberry",  "Elderberry",  "Boysenberry", "Mulberry",    "Acai",        "Goji Berry",  "Currant",
+    // Stone Fruits
+    "Apricot",     "Nectarine",   "Persimmon",   "Date",        "Fig",
+    // Tropical
+    "Passion Fruit", "Dragon Fruit", "Lychee",   "Rambutan",    "Starfruit",   "Guava",       "Durian",      "Jackfruit",
+    "Pomegranate", "Cantaloupe",  "Honeydew",    "Plantain",
+    // Other
+    "Quince",      "Tamarind",    "Breadfruit",  "Soursop",     "Cherimoya",
 };
 
 const food_vegetable = [_][]const u8{
-    "Carrot",  "Broccoli", "Cauliflower", "Cabbage", "Lettuce", "Spinach", "Kale",    "Tomato",
-    "Cucumber", "Pepper",  "Onion",    "Garlic",  "Potato",  "Sweet Potato", "Corn", "Peas",
-    "Beans",   "Celery",  "Asparagus", "Zucchini", "Eggplant", "Mushroom",
+    // Root Vegetables
+    "Carrot",      "Potato",      "Sweet Potato", "Beet",        "Radish",      "Turnip",      "Parsnip",     "Rutabaga",
+    "Ginger",      "Turmeric",    "Horseradish",  "Jicama",      "Taro",        "Yam",         "Cassava",     "Celeriac",
+    // Leafy Greens
+    "Lettuce",     "Spinach",     "Kale",         "Chard",       "Collard Greens", "Arugula",  "Watercress",  "Mustard Greens",
+    "Bok Choy",    "Endive",      "Radicchio",    "Romaine",     "Iceberg",     "Butterhead",  "Mizuna",      "Escarole",
+    // Cruciferous
+    "Broccoli",    "Cauliflower", "Cabbage",      "Brussels Sprouts", "Kohlrabi", "Romanesco",
+    // Alliums
+    "Onion",       "Garlic",      "Shallot",      "Leek",        "Scallion",    "Chives",
+    // Squashes & Gourds
+    "Zucchini",    "Cucumber",    "Pumpkin",      "Squash",      "Eggplant",    "Butternut Squash", "Acorn Squash", "Spaghetti Squash",
+    // Peppers
+    "Bell Pepper", "Jalapeño",    "Habanero",     "Poblano",     "Serrano",     "Cayenne",     "Anaheim",     "Thai Chili",
+    // Others
+    "Tomato",      "Corn",        "Peas",         "Green Beans", "Asparagus",   "Celery",      "Artichoke",   "Okra",
+    "Mushroom",    "Fennel",      "Rhubarb",      "Bamboo Shoots", "Water Chestnuts",
 };
 
 const food_meat = [_][]const u8{
-    "Beef",    "Chicken", "Pork",    "Lamb",    "Turkey",  "Duck",    "Fish",    "Salmon",
-    "Tuna",    "Shrimp",  "Crab",    "Lobster", "Bacon",   "Sausage", "Ham",     "Steak",
+    // Beef & Red Meat
+    "Beef",        "Steak",       "Brisket",     "Ribeye",      "Sirloin",     "Tenderloin",  "Chuck",       "Round",
+    "Ground Beef", "Veal",        "Lamb",        "Mutton",      "Venison",     "Bison",       "Goat",
+    // Poultry
+    "Chicken",     "Turkey",      "Duck",        "Goose",       "Quail",       "Pheasant",    "Cornish Hen", "Chicken Breast",
+    "Chicken Thigh", "Drumstick", "Wings",       "Ground Turkey",
+    // Pork
+    "Pork",        "Bacon",       "Ham",         "Pork Chop",   "Pork Loin",   "Pork Belly",  "Ribs",        "Pulled Pork",
+    "Sausage",     "Bratwurst",   "Chorizo",     "Salami",      "Pepperoni",   "Prosciutto",  "Pancetta",    "Canadian Bacon",
+    // Seafood
+    "Salmon",      "Tuna",        "Cod",         "Halibut",     "Mahi Mahi",   "Trout",       "Bass",        "Tilapia",
+    "Swordfish",   "Mackerel",    "Sardines",    "Anchovies",   "Herring",     "Catfish",     "Snapper",     "Flounder",
+    "Shrimp",      "Crab",        "Lobster",     "Scallops",    "Clams",       "Mussels",     "Oysters",     "Squid",
+    "Octopus",     "Calamari",    "Prawns",      "Crayfish",
 };
 
 const food_spice = [_][]const u8{
-    "Pepper",  "Salt",    "Paprika", "Cumin",   "Coriander", "Turmeric", "Cinnamon", "Nutmeg",
-    "Ginger",  "Garlic",  "Oregano", "Basil",   "Thyme",   "Rosemary", "Sage",    "Parsley",
-    "Dill",    "Mint",    "Chili",   "Curry",   "Saffron", "Cardamom",
+    // Basic Spices
+    "Salt",        "Black Pepper", "White Pepper", "Paprika",     "Cumin",       "Coriander",   "Turmeric",    "Cinnamon",
+    "Nutmeg",      "Ginger",       "Garlic Powder", "Onion Powder", "Cayenne",    "Chili Powder", "Red Pepper Flakes",
+    // Herbs
+    "Basil",       "Oregano",      "Thyme",        "Rosemary",    "Sage",        "Parsley",     "Cilantro",    "Dill",
+    "Mint",        "Tarragon",     "Marjoram",     "Chervil",     "Bay Leaf",    "Fennel Seed", "Celery Seed",
+    // International Spices
+    "Cardamom",    "Saffron",      "Star Anise",   "Cloves",      "Allspice",    "Mace",        "Fenugreek",   "Asafoetida",
+    "Sumac",       "Za'atar",      "Ras el Hanout", "Garam Masala", "Curry Powder", "Chinese Five Spice", "Harissa",
+    "Berbere",     "Adobo",        "Cajun Seasoning", "Jerk Seasoning", "Old Bay",
+    // Seeds & Other
+    "Mustard Seed", "Poppy Seed",  "Sesame Seed",  "Caraway",     "Anise",       "Vanilla",     "Lemongrass",  "Ginseng",
 };
 
 const animal_dog = [_][]const u8{
-    "Labrador",    "German Shepherd", "Golden Retriever", "Bulldog",   "Beagle",
-    "Poodle",      "Rottweiler",   "Yorkshire Terrier", "Boxer",     "Dachshund",
-    "Siberian Husky", "Great Dane", "Doberman",      "Shih Tzu",  "Boston Terrier",
-    "Pomeranian",  "Corgi",        "Chihuahua",     "Pit Bull",  "Border Collie",
+    "Labrador Retriever", "German Shepherd", "Golden Retriever", "French Bulldog", "Bulldog",
+    "Beagle",         "Poodle",          "Rottweiler",       "Yorkshire Terrier", "Boxer",
+    "Dachshund",      "Siberian Husky",  "Great Dane",       "Doberman",       "Shih Tzu",
+    "Boston Terrier", "Pomeranian",      "Corgi",            "Chihuahua",      "Pit Bull",
+    "Border Collie",  "Australian Shepherd", "Cavalier King Charles", "Miniature Schnauzer", "Shiba Inu",
+    "Cocker Spaniel", "Maltese",         "English Springer Spaniel", "Bernese Mountain Dog", "Pug",
+    "Mastiff",        "Basset Hound",    "Newfoundland",     "Saint Bernard",  "Akita",
+    "Bloodhound",     "Weimaraner",      "Vizsla",           "Rhodesian Ridgeback", "Dalmatian",
+    "Jack Russell Terrier", "Bichon Frise", "Havanese",      "Samoyed",        "Alaskan Malamute",
+    "Afghan Hound",   "Irish Setter",    "Bull Terrier",     "Chow Chow",      "Scottish Terrier",
 };
 
 const animal_cat = [_][]const u8{
-    "Persian",   "Maine Coon", "Siamese",   "Ragdoll",   "Bengal",
-    "Sphynx",    "British Shorthair", "Abyssinian", "Birman", "Oriental Shorthair",
-    "Scottish Fold", "Devon Rex", "Norwegian Forest", "Russian Blue", "Manx",
+    "Persian",        "Maine Coon",     "Siamese",        "Ragdoll",        "Bengal",
+    "Sphynx",         "British Shorthair", "Abyssinian",  "Birman",         "Oriental Shorthair",
+    "Scottish Fold",  "Devon Rex",      "Norwegian Forest", "Russian Blue", "Manx",
+    "American Shorthair", "Exotic Shorthair", "Burmese",  "Tonkinese",      "Himalayan",
+    "Turkish Angora", "Siberian",       "Savannah",       "Chartreux",      "Cornish Rex",
+    "Balinese",       "Ragamuffin",     "Somali",         "Turkish Van",    "Ocicat",
 };
 
 const animal_bird = [_][]const u8{
-    "Sparrow",   "Robin",     "Eagle",     "Hawk",      "Owl",
-    "Parrot",    "Canary",    "Finch",     "Pigeon",    "Crow",
-    "Raven",     "Hummingbird", "Woodpecker", "Cardinal", "Blue Jay",
+    "Sparrow",      "Robin",        "Eagle",        "Hawk",         "Owl",
+    "Parrot",       "Canary",       "Finch",        "Pigeon",       "Crow",
+    "Raven",        "Hummingbird",  "Woodpecker",   "Cardinal",     "Blue Jay",
+    "Falcon",       "Osprey",       "Vulture",      "Pelican",      "Albatross",
+    "Penguin",      "Flamingo",     "Swan",         "Duck",         "Goose",
+    "Peacock",      "Toucan",       "Cockatoo",     "Macaw",        "Parakeet",
+    "Cockatiel",    "Budgerigar",   "Lovebird",     "Seagull",      "Tern",
+    "Crane",        "Stork",        "Heron",        "Egret",        "Kingfisher",
 };
 
 const animal_fish = [_][]const u8{
-    "Goldfish",  "Koi",       "Betta",     "Guppy",     "Angelfish",
-    "Tetra",     "Molly",     "Swordtail", "Platy",     "Catfish",
-    "Cichlid",   "Oscar",     "Discus",    "Barb",      "Danio",
+    "Goldfish",     "Koi",          "Betta",        "Guppy",        "Angelfish",
+    "Tetra",        "Molly",        "Swordtail",    "Platy",        "Catfish",
+    "Cichlid",      "Oscar",        "Discus",       "Barb",         "Danio",
+    "Clownfish",    "Tang",         "Damselfish",   "Wrasse",       "Goby",
+    "Blenny",       "Rainbowfish",  "Rasbora",      "Loach",        "Gourami",
+    "Pufferfish",   "Lionfish",     "Grouper",      "Snapper",      "Barracuda",
+};
+
+const animal_horse = [_][]const u8{
+    "Arabian",          "Thoroughbred",     "Quarter Horse",    "Mustang",          "Appaloosa",
+    "Morgan",           "Paint",            "Palomino",         "Clydesdale",       "Percheron",
+    "Belgian",          "Shire",            "Friesian",         "Andalusian",       "Lipizzaner",
+    "Tennessee Walking", "Standardbred",    "Shetland Pony",    "Welsh Pony",       "Haflinger",
+    "Icelandic Horse",  "Gypsy Vanner",     "Akhal-Teke",       "Marwari",          "Connemara",
+};
+
+const animal_farm = [_][]const u8{
+    "Cow",          "Pig",          "Sheep",        "Goat",         "Chicken",
+    "Duck",         "Goose",        "Turkey",       "Horse",        "Donkey",
+    "Mule",         "Llama",        "Alpaca",       "Rabbit",       "Guinea Pig",
+    "Rooster",      "Hen",          "Lamb",         "Calf",         "Piglet",
+    "Foal",         "Kid",          "Chick",        "Duckling",     "Gosling",
+};
+
+const animal_insect = [_][]const u8{
+    "Ant",          "Bee",          "Wasp",         "Butterfly",    "Moth",
+    "Dragonfly",    "Damselfly",    "Grasshopper",  "Cricket",      "Katydid",
+    "Beetle",       "Ladybug",      "Firefly",      "Cockroach",    "Termite",
+    "Fly",          "Mosquito",     "Gnat",         "Horsefly",     "Housefly",
+    "Flea",         "Tick",         "Louse",        "Mantis",       "Walking Stick",
+    "Cicada",       "Aphid",        "Scale Insect", "Mealworm",     "Silkworm",
+};
+
+const animal_wild = [_][]const u8{
+    "Lion",         "Tiger",        "Bear",         "Wolf",         "Fox",
+    "Elephant",     "Rhinoceros",   "Hippopotamus", "Giraffe",      "Zebra",
+    "Deer",         "Moose",        "Elk",          "Caribou",      "Antelope",
+    "Buffalo",      "Bison",        "Gazelle",      "Wildebeest",   "Gnu",
+    "Leopard",      "Cheetah",      "Jaguar",       "Panther",      "Cougar",
+    "Lynx",         "Bobcat",       "Coyote",       "Hyena",        "Jackal",
+    "Monkey",       "Gorilla",      "Chimpanzee",   "Orangutan",    "Baboon",
+    "Lemur",        "Gibbon",       "Sloth",        "Armadillo",    "Anteater",
+    "Porcupine",    "Hedgehog",     "Beaver",       "Otter",        "Seal",
+    "Walrus",       "Sea Lion",     "Dolphin",      "Whale",        "Shark",
+    "Crocodile",    "Alligator",    "Lizard",       "Iguana",       "Gecko",
+    "Snake",        "Python",       "Cobra",        "Rattlesnake",  "Viper",
+    "Frog",         "Toad",         "Salamander",   "Newt",         "Kangaroo",
+    "Koala",        "Platypus",     "Wombat",       "Tasmanian Devil", "Opossum",
+    "Raccoon",      "Skunk",        "Badger",       "Meerkat",      "Prairie Dog",
 };
 
 pub const en: LocaleDefinition = .{
@@ -307,5 +471,9 @@ pub const en: LocaleDefinition = .{
         .cat = &animal_cat,
         .bird = &animal_bird,
         .fish = &animal_fish,
+        .horse = &animal_horse,
+        .farm = &animal_farm,
+        .insect = &animal_insect,
+        .wild = &animal_wild,
     },
 };

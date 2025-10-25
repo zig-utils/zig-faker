@@ -60,6 +60,10 @@ pub const AnimalLocale = struct {
     cat: []const []const u8,
     bird: []const []const u8,
     fish: []const []const u8,
+    horse: []const []const u8,
+    farm: []const []const u8,
+    insect: []const []const u8,
+    wild: []const []const u8,
 };
 
 pub const LocaleDefinition = struct {
