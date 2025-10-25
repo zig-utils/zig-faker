@@ -1,44 +1,40 @@
 const std = @import("std");
 
 /// Random number generator with optional seeding support
-/// Uses Linear Congruential Generator when seeded: (seed * 9301 + 49297) % 233280
 pub const Random = struct {
     seed_value: ?u64,
-    rng: std.Random,
     prng: std.Random.DefaultPrng,
+    rng: std.Random,
 
     pub fn init(seed: ?u64) Random {
-        if (seed) |s| {
-            var prng = std.Random.DefaultPrng.init(s);
-            return Random{
-                .seed_value = s,
-                .rng = prng.random(),
-                .prng = prng,
-            };
-        } else {
-            var prng = std.Random.DefaultPrng.init(blk: {
-                var seed_bytes: [8]u8 = undefined;
-                std.crypto.random.bytes(&seed_bytes);
-                break :blk std.mem.readInt(u64, &seed_bytes, .little);
-            });
-            return Random{
-                .seed_value = null,
-                .rng = prng.random(),
-                .prng = prng,
-            };
-        }
+        const prng = if (seed) |s|
+            std.Random.DefaultPrng.init(s)
+        else blk: {
+            var seed_bytes: [8]u8 = undefined;
+            std.crypto.random.bytes(&seed_bytes);
+            const random_seed = std.mem.readInt(u64, &seed_bytes, .little);
+            break :blk std.Random.DefaultPrng.init(random_seed);
+        };
+
+        var result = Random{
+            .seed_value = seed,
+            .prng = prng,
+            .rng = undefined,
+        };
+        result.rng = result.prng.random();
+        return result;
     }
 
     /// Generate a random float between 0.0 and 1.0
     pub fn number(self: *Random) f64 {
-        return self.rng.float(f64);
+        return self.prng.random().float(f64);
     }
 
     /// Generate a random integer in the range [min, max] inclusive
     pub fn int(self: *Random, min: i64, max: i64) i64 {
         if (min == max) return min;
         const range = @abs(max - min) + 1;
-        return min + @as(i64, @intCast(self.rng.uintLessThan(u64, @intCast(range))));
+        return min + @as(i64, @intCast(self.prng.random().uintLessThan(u64, @intCast(range))));
     }
 
     /// Generate a random float in the range [min, max]
@@ -49,7 +45,7 @@ pub const Random = struct {
     /// Pick a random element from a slice
     pub fn arrayElement(self: *Random, comptime T: type, array: []const T) T {
         if (array.len == 0) @panic("Cannot pick from empty array");
-        const index = self.rng.uintLessThan(usize, array.len);
+        const index = self.prng.random().uintLessThan(usize, array.len);
         return array[index];
     }
 
@@ -65,7 +61,7 @@ pub const Random = struct {
 
         var i: usize = 0;
         while (i < count) {
-            const index = self.rng.uintLessThan(usize, array.len);
+            const index = self.prng.random().uintLessThan(usize, array.len);
             if (!used[index]) {
                 result[i] = array[index];
                 used[index] = true;
@@ -82,7 +78,7 @@ pub const Random = struct {
 
         var i = array.len - 1;
         while (i > 0) : (i -= 1) {
-            const j = self.rng.uintLessThan(usize, i + 1);
+            const j = self.prng.random().uintLessThan(usize, i + 1);
             const temp = array[i];
             array[i] = array[j];
             array[j] = temp;
@@ -100,10 +96,10 @@ pub const Random = struct {
 
         for (format, 0..) |c, i| {
             result[i] = switch (c) {
-                '#' => '0' + @as(u8, @intCast(self.rng.uintLessThan(u8, 10))),
+                '#' => '0' + @as(u8, @intCast(self.prng.random().uintLessThan(u8, 10))),
                 '?' => blk: {
                     const is_upper = self.boolean(0.5);
-                    const letter = @as(u8, @intCast(self.rng.uintLessThan(u8, 26)));
+                    const letter = @as(u8, @intCast(self.prng.random().uintLessThan(u8, 26)));
                     break :blk if (is_upper) 'A' + letter else 'a' + letter;
                 },
                 else => c,
@@ -119,7 +115,7 @@ pub const Random = struct {
         var result = try allocator.alloc(u8, length);
 
         for (0..length) |i| {
-            result[i] = hex_chars[self.rng.uintLessThan(usize, 16)];
+            result[i] = hex_chars[self.prng.random().uintLessThan(usize, 16)];
         }
 
         return result;

@@ -396,3 +396,144 @@ Inspired by [ts-mocker](https://github.com/stacksjs/ts-mocker) - a blazing-fast 
 
 - [ts-mocker](https://github.com/stacksjs/ts-mocker) - TypeScript/JavaScript version
 - [@faker-js/faker](https://github.com/faker-js/faker) - Popular JavaScript faker library
+
+### Food Module
+
+```zig
+// Food items
+const dish = faker.food.dish();           // Pizza, Burger, Sushi, etc.
+const ingredient = faker.food.ingredient(); // Tomato, Onion, Garlic, etc.
+const fruit = faker.food.fruit();         // Apple, Banana, Orange, etc.
+const vegetable = faker.food.vegetable(); // Carrot, Broccoli, etc.
+const meat = faker.food.meat();           // Chicken, Beef, Pork, etc.
+const spice = faker.food.spice();         // Pepper, Salt, Paprika, etc.
+
+// Recipe name
+const recipe = try faker.food.recipe();
+defer allocator.free(recipe);
+```
+
+### Animal Module
+
+```zig
+// Animal breeds and species
+const dog = faker.animal.dog();           // Labrador, German Shepherd, etc.
+const cat = faker.animal.cat();           // Persian, Maine Coon, etc.
+const bird = faker.animal.bird();         // Sparrow, Robin, Eagle, etc.
+const fish = faker.animal.fish();         // Goldfish, Koi, Betta, etc.
+const animal_type = faker.animal.type_(); // Mammal, Bird, Fish, etc.
+
+// Pet names
+const pet_name = faker.animal.petName();  // Max, Bella, Charlie, etc.
+```
+
+### Date Module
+
+```zig
+// Timestamps
+const timestamp = faker.date.timestamp();    // Random Unix timestamp
+const past_date = faker.date.past(30);      // Within last 30 days
+const future_date = faker.date.future(30);  // Within next 30 days
+const recent = faker.date.recent();         // Within last 7 days
+const soon = faker.date.soon();             // Within next 7 days
+
+// Date components
+const weekday = faker.date.weekday();       // Monday, Tuesday, etc.
+const month = faker.date.month();           // January, February, etc.
+
+// Formatted dates
+const date_str = try faker.date.dateString(); // 2024-03-15
+defer allocator.free(date_str);
+
+const time_str = try faker.date.timeString(); // 14:30:45
+defer allocator.free(time_str);
+
+const iso = try faker.date.iso8601();        // 2024-03-15T14:30:45Z
+defer allocator.free(iso);
+```
+
+### Number Module
+
+```zig
+// Basic numbers
+const int_num = faker.number.int(1, 100);      // Random integer in range
+const float_num = faker.number.float(0.0, 1.0); // Random float in range
+const percent = faker.number.percentage(2);     // Random percentage
+
+// Special numbers
+const prime_num = faker.number.prime(100);      // Random prime <= 100
+const even_num = faker.number.even(1, 100);     // Random even number
+const odd_num = faker.number.odd(1, 100);       // Random odd number
+
+// Number formats
+const binary = try faker.number.binary(8);      // 10110101
+defer allocator.free(binary);
+
+const octal = try faker.number.octal(6);        // 742531
+defer allocator.free(octal);
+
+const hex = try faker.number.hexadecimal(8);    // a3f5c2d1
+defer allocator.free(hex);
+```
+
+### Color Module
+
+```zig
+// Color names
+const color_name = faker.color.name();        // Red, Blue, Green, etc.
+const css_color = faker.color.cssColor();     // aliceblue, antiquewhite, etc.
+
+// Color formats
+const hex_color = try faker.color.hex();      // #FF5733
+defer allocator.free(hex_color);
+
+const rgb = try faker.color.rgb();            // rgb(255, 87, 51)
+defer allocator.free(rgb);
+
+const rgba = try faker.color.rgba();          // rgba(255, 87, 51, 0.8)
+defer allocator.free(rgba);
+
+const hsl = try faker.color.hsl();            // hsl(120, 50%, 50%)
+defer allocator.free(hsl);
+
+const hsla = try faker.color.hsla();          // hsla(120, 50%, 50%, 0.8)
+defer allocator.free(hsla);
+
+// RGB array
+const rgb_array = faker.color.rgbArray();     // [255, 87, 51]
+```
+
+### Lorem Module
+
+```zig
+// Words
+const word = faker.lorem.word();              // lorem, ipsum, dolor, etc.
+
+const words = try faker.lorem.words(5);       // 5 random words
+defer allocator.free(words);
+
+// Sentences
+const sentence = try faker.lorem.sentence();  // Random sentence with period
+defer allocator.free(sentence);
+
+const sentences = try faker.lorem.sentences(3); // 3 sentences
+defer allocator.free(sentences);
+
+// Paragraphs
+const paragraph = try faker.lorem.paragraph(); // Random paragraph
+defer allocator.free(paragraph);
+
+const paragraphs = try faker.lorem.paragraphs(2); // 2 paragraphs
+defer allocator.free(paragraphs);
+
+// Other formats
+const lines = try faker.lorem.lines(5);       // 5 lines of text
+defer allocator.free(lines);
+
+const slug = try faker.lorem.slug(3);         // lorem-ipsum-dolor
+defer allocator.free(slug);
+
+const text = try faker.lorem.text(100);       // ~100 characters of text
+defer allocator.free(text);
+```
+
