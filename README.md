@@ -5,9 +5,9 @@ A high-performance, lightweight fake data generator for Zig, inspired by [ts-moc
 ## Features
 
 - **High Performance**: Optimized for speed with minimal allocations
-- **Comprehensive Data**: 6+ major data categories with hundreds of data points
+- **Comprehensive Data**: 20+ major data categories with thousands of data points
+- **Extensive Locale Support**: 55 locales (27 base + 28 regional variants)
 - **Seeded Generation**: Reproducible random data with optional seeding
-- **Locale Support**: Extensible locale system (English included)
 - **Type Safe**: Fully typed Zig API
 - **Zero External Dependencies**: Pure Zig implementation
 - **Modular Design**: Use only what you need
@@ -223,17 +223,42 @@ const name3 = faker1.person.firstName(.{});
 ```zig
 const locales = @import("zig-faker").locales;
 
-// Use specific locale
+// Use specific locale (base locale)
 var faker = Faker.init(allocator, null, &locales.en);
 
+// Or use regional variant
+var faker_us = Faker.init(allocator, null, &locales.en_US);
+var faker_uk = Faker.init(allocator, null, &locales.en_GB);
+
 // Change locale at runtime
-faker.setLocale(&locales.es); // Switch to Spanish (when available)
+faker.setLocale(&locales.es); // Switch to Spanish
 ```
 
-Currently supported locales:
-- English (en) - Built-in
+### Available Locales (55 Total)
 
-More locales coming soon!
+**27 Base Locales:**
+- `af` (Afrikaans), `ar` (Arabic), `az` (Azerbaijani), `cs` (Czech), `da` (Danish)
+- `de` (German), `en` (English), `eo` (Esperanto), `es` (Spanish), `fa` (Persian)
+- `fi` (Finnish), `fr` (French), `he` (Hebrew), `hi` (Hindi), `it` (Italian)
+- `ja` (Japanese), `ko` (Korean), `nl` (Dutch), `no` (Norwegian), `pl` (Polish)
+- `pt` (Portuguese), `sv` (Swedish), `tl` (Tagalog), `tr` (Turkish), `uk` (Ukrainian)
+- `zh` (Chinese), `zu` (Zulu)
+
+**28 Regional Variants:**
+- **English (11)**: `en_US`, `en_GB`, `en_AU`, `en_CA`, `en_GH`, `en_HK`, `en_IE`, `en_IN`, `en_NG`, `en_ZA`
+- **German (3)**: `de_AT` (Austria), `de_CH` (Switzerland), `de_DE` (Germany)
+- **Spanish (2)**: `es_ES` (Spain), `es_MX` (Mexico)
+- **French (6)**: `fr_BE` (Belgium), `fr_CA` (Canada), `fr_CH` (Switzerland), `fr_FR` (France), `fr_LU` (Luxembourg), `fr_SN` (Senegal)
+- **Portuguese (3)**: `pt_BR` (Brazil), `pt_MZ` (Mozambique), `pt_PT` (Portugal)
+- **Chinese (2)**: `zh_CN` (China), `zh_TW` (Taiwan)
+- **African (2)**: `af_ZA` (Afrikaans - South Africa), `zu_ZA` (Zulu - South Africa)
+
+All regional variants include localized:
+- City and state/province names
+- Postal code formats
+- Phone number formats
+- Domain suffixes and email providers
+- Appropriate locale-specific data
 
 ## Data Categories
 
@@ -371,14 +396,16 @@ test "user registration" {
 
 ## Roadmap
 
-- [ ] Additional locales (Spanish, French, German, etc.)
-- [ ] More data categories (Food, Animal, Sport, Music, etc.)
-- [ ] Date/time generation
-- [ ] Lorem ipsum text generation
-- [ ] Color generation
-- [ ] Financial data (credit cards, IBANs, etc.)
+- [x] ✅ Additional locales - **55 locales implemented!**
+- [x] ✅ More data categories - **20+ modules including Food, Animal, Sport, Music, etc.**
+- [x] ✅ Date/time generation
+- [x] ✅ Lorem ipsum text generation
+- [x] ✅ Color generation
+- [x] ✅ Financial data (credit cards, IBANs, Bitcoin/Ethereum addresses)
+- [x] ✅ Validation system with 12+ validators
+- [x] ✅ Weighted selection and realistic distributions
 - [ ] CLI tool for data generation
-- [ ] Advanced features (validation, constraints, relationships)
+- [ ] Advanced features (constraints, data relationships, templates)
 
 ## Contributing
 
