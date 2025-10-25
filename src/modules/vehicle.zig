@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Vehicle = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Vehicle {
+    pub fn init(allocator: std.mem.Allocator) Vehicle {
         return Vehicle{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -53,37 +51,42 @@ pub const Vehicle = struct {
     };
 
     /// Generate a random car manufacturer
-    pub fn manufacturer(self: *Vehicle) []const u8 {
-        return self.random.arrayElement([]const u8, &manufacturers);
+    pub fn manufacturer(self: *Vehicle, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &manufacturers);
     }
 
     /// Generate a random car model
-    pub fn model(self: *Vehicle) []const u8 {
-        return self.random.arrayElement([]const u8, &car_models);
+    pub fn model(self: *Vehicle, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &car_models);
     }
 
     /// Generate a random vehicle type
-    pub fn type_(self: *Vehicle) []const u8 {
-        return self.random.arrayElement([]const u8, &vehicle_types);
+    pub fn type_(self: *Vehicle, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &vehicle_types);
     }
 
     /// Generate a random fuel type
-    pub fn fuel(self: *Vehicle) []const u8 {
-        return self.random.arrayElement([]const u8, &fuel_types);
+    pub fn fuel(self: *Vehicle, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &fuel_types);
     }
 
     /// Generate a random bicycle type
-    pub fn bicycle(self: *Vehicle) []const u8 {
-        return self.random.arrayElement([]const u8, &bicycle_types);
+    pub fn bicycle(self: *Vehicle, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &bicycle_types);
     }
 
     /// Generate a VIN (Vehicle Identification Number)
-    pub fn vin(self: *Vehicle) ![]u8 {
+    pub fn vin(self: *Vehicle, random: *Random) ![]u8 {
         const chars = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789"; // Excludes I, O, Q
         var result = try self.allocator.alloc(u8, 17);
 
         for (0..17) |i| {
-            const idx = self.random.int(0, @as(i64, @intCast(chars.len - 1)));
+            const idx = random.int(0, @as(i64, @intCast(chars.len - 1)));
             result[i] = chars[@intCast(idx)];
         }
 
@@ -91,7 +94,7 @@ pub const Vehicle = struct {
     }
 
     /// Generate a license plate number
-    pub fn licensePlate(self: *Vehicle) ![]u8 {
+    pub fn licensePlate(self: *Vehicle, random: *Random) ![]u8 {
         const formats = [_][]const u8{
             "???-####",
             "###-???",
@@ -99,24 +102,25 @@ pub const Vehicle = struct {
             "###-##??",
         };
 
-        const format = self.random.arrayElement([]const u8, &formats);
-        return self.random.replaceSymbols(self.allocator, format);
+        const format = random.arrayElement([]const u8, &formats);
+        return random.replaceSymbols(self.allocator, format);
     }
 
     /// Generate a full vehicle name (manufacturer + model)
-    pub fn vehicle(self: *Vehicle) ![]u8 {
-        const make = self.manufacturer();
-        const model_name = self.model();
+    pub fn vehicle(self: *Vehicle, random: *Random) ![]u8 {
+        const make = self.manufacturer(random);
+        const model_name = self.model(random);
         return std.fmt.allocPrint(self.allocator, "{s} {s}", .{ make, model_name });
     }
 
     /// Generate a vehicle color
-    pub fn color(self: *Vehicle) []const u8 {
+    pub fn color(self: *Vehicle, random: *Random) []const u8 {
+        _ = self;
         const colors = [_][]const u8{
             "White",  "Black",  "Gray",   "Silver", "Red",    "Blue",
             "Green",  "Yellow", "Orange", "Brown",  "Purple", "Gold",
             "Beige",  "Tan",    "Navy",   "Maroon", "Teal",   "Pink",
         };
-        return self.random.arrayElement([]const u8, &colors);
+        return random.arrayElement([]const u8, &colors);
     }
 };

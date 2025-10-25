@@ -3,7 +3,8 @@ const faker_mod = @import("zig-faker");
 const Faker = faker_mod.Faker;
 
 fn benchmark(comptime name: []const u8, comptime func: anytype, iterations: usize) !void {
-    const stdout = std.io.getStdOut().writer();
+    var stdout_buffer: [4096]u8 = undefined;
+    const stdout = std.fs.File.stdout().writer(&stdout_buffer);
 
     var timer = try std.time.Timer.start();
     const start = timer.lap();
@@ -23,6 +24,8 @@ fn benchmark(comptime name: []const u8, comptime func: anytype, iterations: usiz
     try stdout.print("  Time: {d:.2} ms\n", .{elapsed_ms});
     try stdout.print("  Ops/sec: {d:.0}\n", .{ops_per_sec});
     try stdout.print("  Avg time per op: {d:.2} µs\n\n", .{elapsed_ms * 1000.0 / @as(f64, @floatFromInt(iterations))});
+
+    try stdout.flush();
 }
 
 fn benchmarkUUID(iterations: usize) !void {
@@ -34,7 +37,7 @@ fn benchmarkUUID(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        const uuid = try faker.string.uuid();
+        const uuid = try faker.string.uuid(&faker.random);
         allocator.free(uuid);
     }
 }
@@ -48,7 +51,7 @@ fn benchmarkEmail(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        const email = try faker.internet.email();
+        const email = try faker.internet.email(&faker.random);
         allocator.free(email);
     }
 }
@@ -62,7 +65,7 @@ fn benchmarkFullName(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        const name = try faker.person.fullName(.{});
+        const name = try faker.person.fullName(&faker.random, .{});
         allocator.free(name);
     }
 }
@@ -76,7 +79,7 @@ fn benchmarkFirstName(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        _ = faker.person.firstName(.{});
+        _ = faker.person.firstName(&faker.random, .{});
     }
 }
 
@@ -89,7 +92,7 @@ fn benchmarkAddress(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        const addr = try faker.address.fullAddress();
+        const addr = try faker.address.fullAddress(&faker.random);
         allocator.free(addr);
     }
 }
@@ -103,7 +106,7 @@ fn benchmarkPhoneNumber(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        const phone = try faker.phone.phoneNumber();
+        const phone = try faker.phone.phoneNumber(&faker.random);
         allocator.free(phone);
     }
 }
@@ -117,13 +120,14 @@ fn benchmarkCompanyName(iterations: usize) !void {
 
     var i: usize = 0;
     while (i < iterations) : (i += 1) {
-        const company = try faker.company.name();
+        const company = try faker.company.name(&faker.random);
         allocator.free(company);
     }
 }
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
+    var stdout_buffer: [4096]u8 = undefined;
+    const stdout = std.fs.File.stdout().writer(&stdout_buffer);
 
     try stdout.print("=== Zig Faker Benchmarks ===\n\n", .{});
 
@@ -138,4 +142,5 @@ pub fn main() !void {
     try benchmark("Company Name Generation", benchmarkCompanyName, iterations);
 
     try stdout.print("Benchmark complete!\n", .{});
+    try stdout.flush();
 }

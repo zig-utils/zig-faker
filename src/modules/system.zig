@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const System = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) System {
+    pub fn init(allocator: std.mem.Allocator) System {
         return System{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -72,45 +70,49 @@ pub const System = struct {
     };
 
     /// Generate a random file name
-    pub fn fileName(self: *System) []const u8 {
-        return self.random.arrayElement([]const u8, &file_names);
+    pub fn fileName(self: *System, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &file_names);
     }
 
     /// Generate a random file extension
-    pub fn fileExt(self: *System) []const u8 {
-        return self.random.arrayElement([]const u8, &file_extensions);
+    pub fn fileExt(self: *System, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &file_extensions);
     }
 
     /// Generate a complete file name with extension
-    pub fn filePath(self: *System) ![]u8 {
-        const name = self.fileName();
-        const ext = self.fileExt();
+    pub fn filePath(self: *System, random: *Random) ![]u8 {
+        const name = self.fileName(random);
+        const ext = self.fileExt(random);
         return std.fmt.allocPrint(self.allocator, "{s}.{s}", .{ name, ext });
     }
 
     /// Generate a random MIME type
-    pub fn mimeType(self: *System) []const u8 {
-        return self.random.arrayElement([]const u8, &mime_types);
+    pub fn mimeType(self: *System, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &mime_types);
     }
 
     /// Generate a random directory path
-    pub fn directoryPath(self: *System) []const u8 {
-        return self.random.arrayElement([]const u8, &directory_paths);
+    pub fn directoryPath(self: *System, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &directory_paths);
     }
 
     /// Generate a full file path
-    pub fn fullPath(self: *System) ![]u8 {
-        const dir = self.directoryPath();
-        const file = try self.filePath();
+    pub fn fullPath(self: *System, random: *Random) ![]u8 {
+        const dir = self.directoryPath(random);
+        const file = try self.filePath(random);
         defer self.allocator.free(file);
         return std.fmt.allocPrint(self.allocator, "{s}/{s}", .{ dir, file });
     }
 
     /// Generate a semantic version
-    pub fn semver(self: *System) ![]u8 {
-        const major = self.random.int(0, 9);
-        const minor = self.random.int(0, 99);
-        const patch = self.random.int(0, 99);
+    pub fn semver(self: *System, random: *Random) ![]u8 {
+        const major = random.int(0, 9);
+        const minor = random.int(0, 99);
+        const patch = random.int(0, 99);
         return std.fmt.allocPrint(self.allocator, "{d}.{d}.{d}", .{ major, minor, patch });
     }
 };

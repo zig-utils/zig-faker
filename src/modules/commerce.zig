@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Commerce = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Commerce {
+    pub fn init(allocator: std.mem.Allocator) Commerce {
         return Commerce{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -53,46 +51,52 @@ pub const Commerce = struct {
     };
 
     /// Generate a random product name
-    pub fn product(self: *Commerce) []const u8 {
-        return self.random.arrayElement([]const u8, &products);
+    pub fn product(self: *Commerce, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &products);
     }
 
     /// Generate a product adjective
-    pub fn productAdjective(self: *Commerce) []const u8 {
-        return self.random.arrayElement([]const u8, &adjectives);
+    pub fn productAdjective(self: *Commerce, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &adjectives);
     }
 
     /// Generate a product material
-    pub fn productMaterial(self: *Commerce) []const u8 {
-        return self.random.arrayElement([]const u8, &materials);
+    pub fn productMaterial(self: *Commerce, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &materials);
     }
 
     /// Generate a department name
-    pub fn department(self: *Commerce) []const u8 {
-        return self.random.arrayElement([]const u8, &departments);
+    pub fn department(self: *Commerce, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &departments);
     }
 
     /// Generate a product color
-    pub fn color(self: *Commerce) []const u8 {
-        return self.random.arrayElement([]const u8, &colors);
+    pub fn color(self: *Commerce, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &colors);
     }
 
     /// Generate a full product name (adjective + material + product)
-    pub fn productName(self: *Commerce) ![]u8 {
-        const adj = self.productAdjective();
-        const mat = self.productMaterial();
-        const prod = self.product();
+    pub fn productName(self: *Commerce, random: *Random) ![]u8 {
+        const adj = self.productAdjective(random);
+        const mat = self.productMaterial(random);
+        const prod = self.product(random);
         return std.fmt.allocPrint(self.allocator, "{s} {s} {s}", .{ adj, mat, prod });
     }
 
     /// Generate a product price
-    pub fn price(self: *Commerce, min: f64, max: f64) f64 {
-        const value = self.random.float(min, max);
+    pub fn price(self: *Commerce, random: *Random, min: f64, max: f64) f64 {
+        _ = self;
+        const value = random.float(min, max);
         return @round(value * 100.0) / 100.0;
     }
 
     /// Generate a product SKU
-    pub fn sku(self: *Commerce) ![]u8 {
-        return self.random.replaceSymbols(self.allocator, "???-####-????");
+    pub fn sku(self: *Commerce, random: *Random) ![]u8 {
+        return random.replaceSymbols(self.allocator, "???-####-????");
     }
 };

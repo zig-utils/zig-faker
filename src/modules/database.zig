@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Database = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Database {
+    pub fn init(allocator: std.mem.Allocator) Database {
         return Database{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -47,32 +45,37 @@ pub const Database = struct {
     };
 
     /// Generate a random column name
-    pub fn column(self: *Database) []const u8 {
-        return self.random.arrayElement([]const u8, &column_names);
+    pub fn column(self: *Database, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &column_names);
     }
 
     /// Generate a random table name
-    pub fn table(self: *Database) []const u8 {
-        return self.random.arrayElement([]const u8, &table_names);
+    pub fn table(self: *Database, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &table_names);
     }
 
     /// Generate a random database engine name
-    pub fn engine(self: *Database) []const u8 {
-        return self.random.arrayElement([]const u8, &engines);
+    pub fn engine(self: *Database, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &engines);
     }
 
     /// Generate a random SQL data type
-    pub fn type_(self: *Database) []const u8 {
-        return self.random.arrayElement([]const u8, &sql_types);
+    pub fn type_(self: *Database, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &sql_types);
     }
 
     /// Generate a random collation
-    pub fn collation(self: *Database) []const u8 {
-        return self.random.arrayElement([]const u8, &collations);
+    pub fn collation(self: *Database, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &collations);
     }
 
     /// Generate a MongoDB ObjectId
-    pub fn mongodbObjectId(self: *Database) ![]u8 {
-        return self.random.hex(self.allocator, 24);
+    pub fn mongodbObjectId(self: *Database, random: *Random) ![]u8 {
+        return random.hex(self.allocator, 24);
     }
 };

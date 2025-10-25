@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Book = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Book {
+    pub fn init(allocator: std.mem.Allocator) Book {
         return Book{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -65,37 +63,42 @@ pub const Book = struct {
     };
 
     /// Generate a random book title
-    pub fn title(self: *Book) []const u8 {
-        return self.random.arrayElement([]const u8, &titles);
+    pub fn title(self: *Book, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &titles);
     }
 
     /// Generate a random author name
-    pub fn author(self: *Book) []const u8 {
-        return self.random.arrayElement([]const u8, &authors);
+    pub fn author(self: *Book, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &authors);
     }
 
     /// Generate a random book genre
-    pub fn genre(self: *Book) []const u8 {
-        return self.random.arrayElement([]const u8, &genres);
+    pub fn genre(self: *Book, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &genres);
     }
 
     /// Generate a random publisher
-    pub fn publisher(self: *Book) []const u8 {
-        return self.random.arrayElement([]const u8, &publishers);
+    pub fn publisher(self: *Book, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &publishers);
     }
 
     /// Generate a random series name
-    pub fn series(self: *Book) []const u8 {
-        return self.random.arrayElement([]const u8, &series_names);
+    pub fn series(self: *Book, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &series_names);
     }
 
     /// Generate an ISBN-10
-    pub fn isbn10(self: *Book) ![]u8 {
-        return self.random.replaceSymbols(self.allocator, "##########");
+    pub fn isbn10(self: *Book, random: *Random) ![]u8 {
+        return random.replaceSymbols(self.allocator, "##########");
     }
 
     /// Generate an ISBN-13
-    pub fn isbn13(self: *Book) ![]u8 {
-        return self.random.replaceSymbols(self.allocator, "###-##########");
+    pub fn isbn13(self: *Book, random: *Random) ![]u8 {
+        return random.replaceSymbols(self.allocator, "###-##########");
     }
 };

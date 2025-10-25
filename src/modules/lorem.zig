@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Lorem = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Lorem {
+    pub fn init(allocator: std.mem.Allocator) Lorem {
         return Lorem{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -28,26 +26,27 @@ pub const Lorem = struct {
     };
 
     /// Generate a single random word
-    pub fn word(self: *Lorem) []const u8 {
-        return self.random.arrayElement([]const u8, &lorem_words);
+    pub fn word(self: *Lorem, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &lorem_words);
     }
 
     /// Generate multiple words
-    pub fn words(self: *Lorem, count: usize) ![]u8 {
+    pub fn words(self: *Lorem, random: *Random, count: usize) ![]u8 {
         var result = std.ArrayList([]const u8).initCapacity(self.allocator, count) catch unreachable;
         defer result.deinit(self.allocator);
 
         for (0..count) |_| {
-            try result.append(self.allocator, self.word());
+            try result.append(self.allocator, self.word(random));
         }
 
         return std.mem.join(self.allocator, " ", result.items);
     }
 
     /// Generate a sentence (10-20 words)
-    pub fn sentence(self: *Lorem) ![]u8 {
-        const word_count = @as(usize, @intCast(self.random.int(10, 20)));
-        const sentence_words = try self.words(word_count);
+    pub fn sentence(self: *Lorem, random: *Random) ![]u8 {
+        const word_count = @as(usize, @intCast(random.int(10, 20)));
+        const sentence_words = try self.words(random, word_count);
         defer self.allocator.free(sentence_words);
 
         // Capitalize first letter and add period
@@ -60,12 +59,12 @@ pub const Lorem = struct {
     }
 
     /// Generate multiple sentences
-    pub fn sentences(self: *Lorem, count: usize) ![]u8 {
+    pub fn sentences(self: *Lorem, random: *Random, count: usize) ![]u8 {
         var result = try std.ArrayList(u8).initCapacity(self.allocator, count * 50);
         defer result.deinit(self.allocator);
 
         for (0..count) |i| {
-            const sent = try self.sentence();
+            const sent = try self.sentence(random);
             defer self.allocator.free(sent);
 
             try result.appendSlice(self.allocator, sent);
@@ -78,18 +77,18 @@ pub const Lorem = struct {
     }
 
     /// Generate a paragraph (3-7 sentences)
-    pub fn paragraph(self: *Lorem) ![]u8 {
-        const sentence_count = @as(usize, @intCast(self.random.int(3, 7)));
-        return self.sentences(sentence_count);
+    pub fn paragraph(self: *Lorem, random: *Random) ![]u8 {
+        const sentence_count = @as(usize, @intCast(random.int(3, 7)));
+        return self.sentences(random, sentence_count);
     }
 
     /// Generate multiple paragraphs
-    pub fn paragraphs(self: *Lorem, count: usize) ![]u8 {
+    pub fn paragraphs(self: *Lorem, random: *Random, count: usize) ![]u8 {
         var result = std.ArrayList(u8).init(self.allocator);
         defer result.deinit(self.allocator);
 
         for (0..count) |i| {
-            const para = try self.paragraph();
+            const para = try self.paragraph(random);
             defer self.allocator.free(para);
 
             try result.appendSlice(self.allocator, para);
@@ -102,12 +101,12 @@ pub const Lorem = struct {
     }
 
     /// Generate text with specified line count
-    pub fn lines(self: *Lorem, count: usize) ![]u8 {
+    pub fn lines(self: *Lorem, random: *Random, count: usize) ![]u8 {
         var result = std.ArrayList(u8).init(self.allocator);
         defer result.deinit(self.allocator);
 
         for (0..count) |i| {
-            const sent = try self.sentence();
+            const sent = try self.sentence(random);
             defer self.allocator.free(sent);
 
             try result.appendSlice(self.allocator, sent);
@@ -120,24 +119,24 @@ pub const Lorem = struct {
     }
 
     /// Generate a slug (lowercase words separated by hyphens)
-    pub fn slug(self: *Lorem, word_count: usize) ![]u8 {
+    pub fn slug(self: *Lorem, random: *Random, word_count: usize) ![]u8 {
         var result = std.ArrayList([]const u8).initCapacity(self.allocator, word_count) catch unreachable;
         defer result.deinit(self.allocator);
 
         for (0..word_count) |_| {
-            try result.append(self.allocator, self.word());
+            try result.append(self.allocator, self.word(random));
         }
 
         return std.mem.join(self.allocator, "-", result.items);
     }
 
     /// Generate text with specified character count (approximate)
-    pub fn text(self: *Lorem, char_count: usize) ![]u8 {
+    pub fn text(self: *Lorem, random: *Random, char_count: usize) ![]u8 {
         var result = std.ArrayList(u8).init(self.allocator);
         defer result.deinit(self.allocator);
 
         while (result.items.len < char_count) {
-            const w = self.word();
+            const w = self.word(random);
             try result.appendSlice(self.allocator, w);
 
             if (result.items.len < char_count) {

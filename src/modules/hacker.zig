@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Hacker = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Hacker {
+    pub fn init(allocator: std.mem.Allocator) Hacker {
         return Hacker{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -51,32 +49,37 @@ pub const Hacker = struct {
     };
 
     /// Generate a random tech abbreviation
-    pub fn abbreviation(self: *Hacker) []const u8 {
-        return self.random.arrayElement([]const u8, &abbreviations);
+    pub fn abbreviation(self: *Hacker, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &abbreviations);
     }
 
     /// Generate a random tech adjective
-    pub fn adjective(self: *Hacker) []const u8 {
-        return self.random.arrayElement([]const u8, &adjectives);
+    pub fn adjective(self: *Hacker, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &adjectives);
     }
 
     /// Generate a random tech noun
-    pub fn noun(self: *Hacker) []const u8 {
-        return self.random.arrayElement([]const u8, &nouns);
+    pub fn noun(self: *Hacker, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &nouns);
     }
 
     /// Generate a random tech verb
-    pub fn verb(self: *Hacker) []const u8 {
-        return self.random.arrayElement([]const u8, &verbs);
+    pub fn verb(self: *Hacker, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &verbs);
     }
 
     /// Generate a random tech -ing verb
-    pub fn ingverb(self: *Hacker) []const u8 {
-        return self.random.arrayElement([]const u8, &ingverbs);
+    pub fn ingverb(self: *Hacker, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &ingverbs);
     }
 
     /// Generate a tech phrase
-    pub fn phrase(self: *Hacker) ![]u8 {
+    pub fn phrase(self: *Hacker, random: *Random) ![]u8 {
         const patterns = [_][]const u8{
             "If we {verb} the {noun}, we can get to the {abbreviation} {noun} through the {adjective} {abbreviation} {noun}!",
             "We need to {verb} the {adjective} {abbreviation} {noun}!",
@@ -88,20 +91,21 @@ pub const Hacker = struct {
             "I'll {verb} the {adjective} {abbreviation} {noun}, that should {verb} the {abbreviation} {noun}!",
         };
 
-        const pattern = self.random.arrayElement([]const u8, &patterns);
+        const pattern = random.arrayElement([]const u8, &patterns);
         var result = try self.allocator.dupe(u8, pattern);
 
         // Replace placeholders
-        result = try self.replacePlaceholder(result, "{verb}", self.verb());
-        result = try self.replacePlaceholder(result, "{noun}", self.noun());
-        result = try self.replacePlaceholder(result, "{abbreviation}", self.abbreviation());
-        result = try self.replacePlaceholder(result, "{adjective}", self.adjective());
-        result = try self.replacePlaceholder(result, "{ingverb}", self.ingverb());
+        result = try self.replacePlaceholder(random, result, "{verb}", self.verb(random));
+        result = try self.replacePlaceholder(random, result, "{noun}", self.noun(random));
+        result = try self.replacePlaceholder(random, result, "{abbreviation}", self.abbreviation(random));
+        result = try self.replacePlaceholder(random, result, "{adjective}", self.adjective(random));
+        result = try self.replacePlaceholder(random, result, "{ingverb}", self.ingverb(random));
 
         return result;
     }
 
-    fn replacePlaceholder(self: *Hacker, text: []u8, placeholder: []const u8, replacement: []const u8) ![]u8 {
+    fn replacePlaceholder(self: *Hacker, random: *Random, text: []u8, placeholder: []const u8, replacement: []const u8) ![]u8 {
+        _ = random;
         var result = try std.ArrayList(u8).initCapacity(self.allocator, text.len + replacement.len);
         defer result.deinit(self.allocator);
 

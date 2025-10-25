@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Science = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Science {
+    pub fn init(allocator: std.mem.Allocator) Science {
         return Science{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -73,43 +71,48 @@ pub const Science = struct {
     };
 
     /// Generate a random chemical element name
-    pub fn element(self: *Science) []const u8 {
-        return self.random.arrayElement([]const u8, &elements);
+    pub fn element(self: *Science, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &elements);
     }
 
     /// Generate a random chemical element symbol
-    pub fn elementSymbol(self: *Science) []const u8 {
-        return self.random.arrayElement([]const u8, &element_symbols);
+    pub fn elementSymbol(self: *Science, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &element_symbols);
     }
 
     /// Generate a random unit of measurement
-    pub fn unit(self: *Science) []const u8 {
-        return self.random.arrayElement([]const u8, &units);
+    pub fn unit(self: *Science, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &units);
     }
 
     /// Generate a random scientific field
-    pub fn field(self: *Science) []const u8 {
-        return self.random.arrayElement([]const u8, &fields);
+    pub fn field(self: *Science, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &fields);
     }
 
     /// Generate a random scientific constant name
-    pub fn constant(self: *Science) []const u8 {
-        return self.random.arrayElement([]const u8, &constants);
+    pub fn constant(self: *Science, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &constants);
     }
 
     /// Generate a random chemical formula
-    pub fn chemicalFormula(self: *Science) ![]u8 {
+    pub fn chemicalFormula(self: *Science, random: *Random) ![]u8 {
         const patterns = [_][]const u8{
             "{E}",       "{E}2",      "{E}3",      "{E}{E}",    "{E}2{E}",
             "{E}{E}2",   "{E}2{E}3",  "{E}3{E}2",  "{E}{E}3",   "{E}({E}2)3",
         };
 
-        const pattern = self.random.arrayElement([]const u8, &patterns);
+        const pattern = random.arrayElement([]const u8, &patterns);
         var result = try self.allocator.dupe(u8, pattern);
 
         // Replace {E} with element symbols
         while (std.mem.indexOf(u8, result, "{E}")) |idx| {
-            const symbol = self.elementSymbol();
+            const symbol = self.elementSymbol(random);
             const new_result = try std.fmt.allocPrint(
                 self.allocator,
                 "{s}{s}{s}",

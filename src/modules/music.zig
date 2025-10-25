@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Music = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Music {
+    pub fn init(allocator: std.mem.Allocator) Music {
         return Music{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -65,27 +63,32 @@ pub const Music = struct {
     };
 
     /// Generate a random music genre
-    pub fn genre(self: *Music) []const u8 {
-        return self.random.arrayElement([]const u8, &genres);
+    pub fn genre(self: *Music, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &genres);
     }
 
     /// Generate a random artist name
-    pub fn artist(self: *Music) []const u8 {
-        return self.random.arrayElement([]const u8, &artists);
+    pub fn artist(self: *Music, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &artists);
     }
 
     /// Generate a random song title
-    pub fn song(self: *Music) []const u8 {
-        return self.random.arrayElement([]const u8, &songs);
+    pub fn song(self: *Music, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &songs);
     }
 
     /// Generate a random instrument
-    pub fn instrument(self: *Music) []const u8 {
-        return self.random.arrayElement([]const u8, &instruments);
+    pub fn instrument(self: *Music, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &instruments);
     }
 
     /// Generate a random album title
-    pub fn album(self: *Music) []const u8 {
-        return self.random.arrayElement([]const u8, &albums);
+    pub fn album(self: *Music, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &albums);
     }
 };

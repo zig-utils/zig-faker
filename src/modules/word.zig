@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Word = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Word {
+    pub fn init(allocator: std.mem.Allocator) Word {
         return Word{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -74,42 +72,49 @@ pub const Word = struct {
     };
 
     /// Generate a random adjective
-    pub fn adjective(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &adjectives_list);
+    pub fn adjective(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &adjectives_list);
     }
 
     /// Generate a random adverb
-    pub fn adverb(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &adverbs_list);
+    pub fn adverb(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &adverbs_list);
     }
 
     /// Generate a random conjunction
-    pub fn conjunction(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &conjunctions_list);
+    pub fn conjunction(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &conjunctions_list);
     }
 
     /// Generate a random interjection
-    pub fn interjection(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &interjections_list);
+    pub fn interjection(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &interjections_list);
     }
 
     /// Generate a random noun
-    pub fn noun(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &nouns_list);
+    pub fn noun(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &nouns_list);
     }
 
     /// Generate a random preposition
-    pub fn preposition(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &prepositions_list);
+    pub fn preposition(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &prepositions_list);
     }
 
     /// Generate a random verb
-    pub fn verb(self: *Word) []const u8 {
-        return self.random.arrayElement([]const u8, &verbs_list);
+    pub fn verb(self: *Word, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &verbs_list);
     }
 
     /// Generate multiple words
-    pub fn words(self: *Word, count: usize) ![]u8 {
+    pub fn words(self: *Word, random: *Random, count: usize) ![]u8 {
         var result = std.ArrayList([]const u8).initCapacity(self.allocator, count) catch unreachable;
         defer result.deinit(self.allocator);
 
@@ -118,8 +123,8 @@ pub const Word = struct {
         };
 
         for (0..count) |_| {
-            const word_list = self.random.arrayElement([]const []const u8, &all_words);
-            const word = self.random.arrayElement([]const u8, word_list);
+            const word_list = random.arrayElement([]const []const u8, &all_words);
+            const word = random.arrayElement([]const u8, word_list);
             try result.append(self.allocator, word);
         }
 

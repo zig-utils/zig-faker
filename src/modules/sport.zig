@@ -2,12 +2,10 @@ const std = @import("std");
 const Random = @import("../random.zig").Random;
 
 pub const Sport = struct {
-    random: *Random,
     allocator: std.mem.Allocator,
 
-    pub fn init(allocator: std.mem.Allocator, random: *Random) Sport {
+    pub fn init(allocator: std.mem.Allocator) Sport {
         return Sport{
-            .random = random,
             .allocator = allocator,
         };
     }
@@ -62,27 +60,31 @@ pub const Sport = struct {
     };
 
     /// Generate a random sport name
-    pub fn sport(self: *Sport) []const u8 {
-        return self.random.arrayElement([]const u8, &sports);
+    pub fn sport(self: *Sport, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &sports);
     }
 
     /// Generate a random team name
-    pub fn team(self: *Sport) []const u8 {
-        return self.random.arrayElement([]const u8, &teams);
+    pub fn team(self: *Sport, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &teams);
     }
 
     /// Generate a random athlete name
-    pub fn athlete(self: *Sport) []const u8 {
-        return self.random.arrayElement([]const u8, &athletes);
+    pub fn athlete(self: *Sport, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &athletes);
     }
 
     /// Generate a random position
-    pub fn position(self: *Sport) []const u8 {
-        return self.random.arrayElement([]const u8, &positions);
+    pub fn position(self: *Sport, random: *Random) []const u8 {
+        _ = self;
+        return random.arrayElement([]const u8, &positions);
     }
 
     /// Generate a full team name (City + Team)
-    pub fn fullTeamName(self: *Sport) ![]u8 {
+    pub fn fullTeamName(self: *Sport, random: *Random) ![]u8 {
         const cities = [_][]const u8{
             "New York",    "Los Angeles", "Chicago",     "Houston",     "Phoenix",
             "Philadelphia", "San Antonio", "San Diego",  "Dallas",      "San Jose",
@@ -92,8 +94,8 @@ pub const Sport = struct {
             "Miami",       "Atlanta",     "Cleveland",   "Minneapolis", "Tampa",
         };
 
-        const city = self.random.arrayElement([]const u8, &cities);
-        const team_name = self.team();
+        const city = random.arrayElement([]const u8, &cities);
+        const team_name = self.team(random);
         return std.fmt.allocPrint(self.allocator, "{s} {s}", .{ city, team_name });
     }
 };

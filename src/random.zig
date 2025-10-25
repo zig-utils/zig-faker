@@ -4,7 +4,6 @@ const std = @import("std");
 pub const Random = struct {
     seed_value: ?u64,
     prng: std.Random.DefaultPrng,
-    rng: std.Random,
 
     pub fn init(seed: ?u64) Random {
         const prng = if (seed) |s|
@@ -16,13 +15,10 @@ pub const Random = struct {
             break :blk std.Random.DefaultPrng.init(random_seed);
         };
 
-        var result = Random{
+        return Random{
             .seed_value = seed,
             .prng = prng,
-            .rng = undefined,
         };
-        result.rng = result.prng.random();
-        return result;
     }
 
     /// Generate a random float between 0.0 and 1.0
