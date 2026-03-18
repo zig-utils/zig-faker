@@ -6,7 +6,6 @@
     .dependencies = .{},
     .paths = .{
         "README.md",
-        "LICENSE",
         "build.zig",
         "build.zig.zon",
         "src",
