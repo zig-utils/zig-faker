@@ -329,24 +329,71 @@ pub const Validation = struct {
         return true;
     }
 
-    /// Validate that value matches a pattern (simple wildcard matching)
+    /// Validate that value matches a pattern (wildcard matching with * support)
+    /// Supports: "prefix*", "*suffix", "*middle*", "pre*post", etc.
     pub fn validatePattern(value: []const u8, pattern: []const u8) bool {
-        // Simple pattern matching with * as wildcard
-        if (std.mem.indexOf(u8, pattern, "*")) |_| {
-            // Has wildcard - do simple prefix/suffix matching
-            if (std.mem.startsWith(u8, pattern, "*")) {
-                const suffix = pattern[1..];
-                return std.mem.endsWith(u8, value, suffix);
-            } else if (std.mem.endsWith(u8, pattern, "*")) {
-                const prefix = pattern[0..pattern.len - 1];
-                return std.mem.startsWith(u8, value, prefix);
-            }
-            // TODO: More complex wildcard matching
-            return true;
-        } else {
-            // No wildcard - exact match
+        if (pattern.len == 0) return value.len == 0;
+        if (value.len == 0) return pattern.len == 1 and pattern[0] == '*';
+
+        // No wildcard - exact match
+        if (std.mem.indexOf(u8, pattern, "*") == null) {
             return std.mem.eql(u8, value, pattern);
         }
+
+        // Split pattern by wildcards
+        var pattern_parts = std.ArrayList([]const u8).initCapacity(std.heap.page_allocator, 4) catch return false;
+        defer pattern_parts.deinit(std.heap.page_allocator);
+
+        var it = std.mem.splitSequence(u8, pattern, "*");
+        while (it.next()) |part| {
+            if (part.len > 0) {
+                pattern_parts.append(std.heap.page_allocator, part) catch return false;
+            }
+        }
+
+        // Special cases
+        if (pattern_parts.items.len == 0) return true; // Pattern is "*" or "**"
+
+        // For single part patterns
+        if (pattern_parts.items.len == 1) {
+            const part = pattern_parts.items[0];
+            if (std.mem.startsWith(u8, pattern, "*") and std.mem.endsWith(u8, pattern, "*")) {
+                // Pattern: *middle* - contains
+                return std.mem.indexOf(u8, value, part) != null;
+            } else if (std.mem.startsWith(u8, pattern, "*")) {
+                // Pattern: *suffix
+                return std.mem.endsWith(u8, value, part);
+            } else if (std.mem.endsWith(u8, pattern, "*")) {
+                // Pattern: prefix*
+                return std.mem.startsWith(u8, value, part);
+            }
+            return std.mem.eql(u8, value, part);
+        }
+
+        // Multiple parts - match each in sequence
+        var pos: usize = 0;
+        for (pattern_parts.items, 0..) |part, i| {
+            // First part must match at the beginning (unless pattern starts with *)
+            if (i == 0 and !std.mem.startsWith(u8, pattern, "*")) {
+                if (!std.mem.startsWith(u8, value[pos..], part)) return false;
+                pos += part.len;
+                continue;
+            }
+
+            // Last part must match at the end (unless pattern ends with *)
+            if (i == pattern_parts.items.len - 1 and !std.mem.endsWith(u8, pattern, "*")) {
+                return std.mem.endsWith(u8, value[pos..], part);
+            }
+
+            // Middle parts - find occurrence
+            if (std.mem.indexOf(u8, value[pos..], part)) |found_pos| {
+                pos += found_pos + part.len;
+            } else {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // ==================== Validation Engine ====================
@@ -534,6 +581,50 @@ test "validate length" {
 
     try std.testing.expect(Validation.validateLength("hello", 5));
     try std.testing.expect(!Validation.validateLength("hello", 10));
+}
+
+test "validate pattern - exact match" {
+    try std.testing.expect(Validation.validatePattern("hello", "hello"));
+    try std.testing.expect(!Validation.validatePattern("hello", "world"));
+    try std.testing.expect(!Validation.validatePattern("hello", "Hello"));
+}
+
+test "validate pattern - prefix wildcard" {
+    try std.testing.expect(Validation.validatePattern("hello.txt", "*.txt"));
+    try std.testing.expect(Validation.validatePattern("document.txt", "*.txt"));
+    try std.testing.expect(!Validation.validatePattern("hello.pdf", "*.txt"));
+}
+
+test "validate pattern - suffix wildcard" {
+    try std.testing.expect(Validation.validatePattern("hello.txt", "hello*"));
+    try std.testing.expect(Validation.validatePattern("hello123", "hello*"));
+    try std.testing.expect(!Validation.validatePattern("world.txt", "hello*"));
+}
+
+test "validate pattern - contains wildcard" {
+    try std.testing.expect(Validation.validatePattern("hello world", "*world*"));
+    try std.testing.expect(Validation.validatePattern("the world is round", "*world*"));
+    try std.testing.expect(!Validation.validatePattern("hello there", "*world*"));
+}
+
+test "validate pattern - multiple wildcards" {
+    try std.testing.expect(Validation.validatePattern("user_profile_2024.json", "user*2024*"));
+    try std.testing.expect(Validation.validatePattern("test_file_v2.txt", "test*v2*"));
+    try std.testing.expect(!Validation.validatePattern("user_profile_2023.json", "user*2024*"));
+}
+
+test "validate pattern - complex patterns" {
+    try std.testing.expect(Validation.validatePattern("log_2024_01_15.txt", "log_*_*.txt"));
+    try std.testing.expect(Validation.validatePattern("backup_database_production.sql", "*_database_*.sql"));
+    try std.testing.expect(!Validation.validatePattern("readme.md", "*.txt"));
+}
+
+test "validate pattern - edge cases" {
+    try std.testing.expect(Validation.validatePattern("anything", "*"));
+    try std.testing.expect(Validation.validatePattern("hello", "**"));
+    try std.testing.expect(Validation.validatePattern("", ""));
+    try std.testing.expect(!Validation.validatePattern("hello", ""));
+    try std.testing.expect(!Validation.validatePattern("", "hello"));
 }
 
 test "validation with rules - strict mode" {

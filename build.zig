@@ -84,4 +84,29 @@ pub fn build(b: *std.Build) void {
     const run_demo = b.addRunArtifact(demo);
     const demo_step = b.step("demo", "Run comprehensive demo");
     demo_step.dependOn(&run_demo.step);
+
+    // CLI executable - "faker"
+    const cli_module = b.createModule(.{
+        .root_source_file = b.path("src/cli.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    cli_module.addImport("faker.zig", root_module);
+
+    const cli = b.addExecutable(.{
+        .name = "faker",
+        .root_module = cli_module,
+    });
+    b.installArtifact(cli);
+
+    const run_cli = b.addRunArtifact(cli);
+    if (b.args) |args| {
+        run_cli.addArgs(args);
+    }
+    const cli_step = b.step("cli", "Run the faker CLI");
+    cli_step.dependOn(&run_cli.step);
+
+    // Install step specifically for CLI
+    const install_cli_step = b.step("install-cli", "Install the faker CLI binary");
+    install_cli_step.dependOn(&b.addInstallArtifact(cli, .{}).step);
 }

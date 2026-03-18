@@ -1,1 +1,4 @@
 /.zig-cache
+test_build/
+zig-out/
+*.sh
