@@ -1,5 +1,5 @@
 const std = @import("std");
-const faker_mod = @import("zig-faker");
+const faker_mod = @import("zig_faker");
 const Faker = faker_mod.Faker;
 
 fn benchmark(comptime name: []const u8, comptime func: anytype, iterations: usize) !void {

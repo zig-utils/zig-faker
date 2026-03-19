@@ -12,7 +12,7 @@ pub fn build(b: *std.Build) void {
     });
 
     // Module for external use
-    _ = b.addModule("zig-faker", .{
+    _ = b.addModule("zig_faker", .{
         .root_source_file = b.path("src/faker.zig"),
     });
 
@@ -22,7 +22,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    example_module.addImport("zig-faker", root_module);
+    example_module.addImport("zig_faker", root_module);
 
     const example = b.addExecutable(.{
         .name = "example",
@@ -55,7 +55,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = .ReleaseFast,
     });
-    benchmark_module.addImport("zig-faker", root_module);
+    benchmark_module.addImport("zig_faker", root_module);
 
     const benchmark = b.addExecutable(.{
         .name = "benchmark",
