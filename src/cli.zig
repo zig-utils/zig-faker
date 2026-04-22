@@ -20,13 +20,21 @@ const OutputFormat = enum {
     csv,
 };
 
-pub fn main() !void {
-    var gpa: std.heap.DebugAllocator(.{}) = .init;
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
-    const args = try std.process.argsAlloc(allocator);
-    defer std.process.argsFree(allocator, args);
+    // std.process.argsAlloc was removed in zig 0.17-dev. Iterate via the
+    // portable iterateAllocator (works on Windows too) and collect into a
+    // slice so the rest of the code can keep using indexed access.
+    var it = try init.minimal.args.iterateAllocator(allocator);
+    defer it.deinit();
+    var args_list: std.ArrayList([]const u8) = .empty;
+    defer {
+        for (args_list.items) |a| allocator.free(a);
+        args_list.deinit(allocator);
+    }
+    while (it.next()) |arg| try args_list.append(allocator, try allocator.dupe(u8, arg));
+    const args = args_list.items;
 
     if (args.len < 2) {
         printHelp();
