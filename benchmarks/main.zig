@@ -3,14 +3,13 @@ const faker_mod = @import("zig_faker");
 const Faker = faker_mod.Faker;
 
 fn benchmark(comptime name: []const u8, comptime func: anytype, iterations: usize) !void {
-    var stdout_buffer: [4096]u8 = undefined;
-    const stdout = std.fs.File.stdout().writer(&stdout_buffer);
-
+    // std.fs.File.stdout() was removed in 0.17-dev; std.debug.print is
+    // the portable replacement for benchmark output.
     var timer = try std.time.Timer.start();
     const start = timer.lap();
 
     func(iterations) catch |err| {
-        try stdout.print("Error in {s}: {}\n", .{ name, err });
+        std.debug.print("Error in {s}: {}\n", .{ name, err });
         return;
     };
 
@@ -19,17 +18,15 @@ fn benchmark(comptime name: []const u8, comptime func: anytype, iterations: usiz
     const elapsed_ms = @as(f64, @floatFromInt(elapsed_ns)) / 1_000_000.0;
     const ops_per_sec = @as(f64, @floatFromInt(iterations)) / (@as(f64, @floatFromInt(elapsed_ns)) / 1_000_000_000.0);
 
-    try stdout.print("{s}:\n", .{name});
-    try stdout.print("  Iterations: {d}\n", .{iterations});
-    try stdout.print("  Time: {d:.2} ms\n", .{elapsed_ms});
-    try stdout.print("  Ops/sec: {d:.0}\n", .{ops_per_sec});
-    try stdout.print("  Avg time per op: {d:.2} µs\n\n", .{elapsed_ms * 1000.0 / @as(f64, @floatFromInt(iterations))});
-
-    try stdout.flush();
+    std.debug.print("{s}:\n", .{name});
+    std.debug.print("  Iterations: {d}\n", .{iterations});
+    std.debug.print("  Time: {d:.2} ms\n", .{elapsed_ms});
+    std.debug.print("  Ops/sec: {d:.0}\n", .{ops_per_sec});
+    std.debug.print("  Avg time per op: {d:.2} µs\n\n", .{elapsed_ms * 1000.0 / @as(f64, @floatFromInt(iterations))});
 }
 
 fn benchmarkUUID(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -43,7 +40,7 @@ fn benchmarkUUID(iterations: usize) !void {
 }
 
 fn benchmarkEmail(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -57,7 +54,7 @@ fn benchmarkEmail(iterations: usize) !void {
 }
 
 fn benchmarkFullName(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -71,7 +68,7 @@ fn benchmarkFullName(iterations: usize) !void {
 }
 
 fn benchmarkFirstName(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -84,7 +81,7 @@ fn benchmarkFirstName(iterations: usize) !void {
 }
 
 fn benchmarkAddress(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -98,7 +95,7 @@ fn benchmarkAddress(iterations: usize) !void {
 }
 
 fn benchmarkPhoneNumber(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -112,7 +109,7 @@ fn benchmarkPhoneNumber(iterations: usize) !void {
 }
 
 fn benchmarkCompanyName(iterations: usize) !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
@@ -126,10 +123,9 @@ fn benchmarkCompanyName(iterations: usize) !void {
 }
 
 pub fn main() !void {
-    var stdout_buffer: [4096]u8 = undefined;
-    const stdout = std.fs.File.stdout().writer(&stdout_buffer);
-
-    try stdout.print("=== Zig Faker Benchmarks ===\n\n", .{});
+    // std.fs.File.stdout() was removed in 0.17-dev; std.debug.print is
+    // the portable replacement for benchmark output.
+    std.debug.print("=== Zig Faker Benchmarks ===\n\n", .{});
 
     const iterations: usize = 100_000;
 

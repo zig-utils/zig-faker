@@ -9,9 +9,11 @@ pub const Random = struct {
         const prng = if (seed) |s|
             std.Random.DefaultPrng.init(s)
         else blk: {
-            var seed_bytes: [8]u8 = undefined;
-            std.crypto.random.bytes(&seed_bytes);
-            const random_seed = std.mem.readInt(u64, &seed_bytes, .little);
+            // std.crypto.random / std.posix.getrandom were removed in
+            // zig 0.17-dev. Seed from a stack-address to get a
+            // non-deterministic value without depending on the removed APIs.
+            var sentinel: u8 = 0;
+            const random_seed: u64 = @truncate(@intFromPtr(&sentinel));
             break :blk std.Random.DefaultPrng.init(random_seed);
         };
 

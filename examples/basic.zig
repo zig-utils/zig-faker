@@ -3,7 +3,7 @@ const faker_mod = @import("zig_faker");
 const Faker = faker_mod.Faker;
 
 pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
