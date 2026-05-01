@@ -5,6 +5,7 @@ This document tracks the implementation progress and future enhancements for the
 ## ✅ Completed (Phase 1 - Core Implementation)
 
 ### Core Infrastructure
+
 - [x] Project structure and build system
 - [x] Random number generator with seeding support
 - [x] Locale definition system and types
@@ -12,6 +13,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Main Faker struct with module organization
 
 ### Core Modules
+
 - [x] Person module (names, prefixes, suffixes, job titles, gender)
 - [x] Address module (streets, cities, states, countries, postal codes)
 - [x] Company module (names, industries, buzzwords, catch phrases)
@@ -20,6 +22,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] String utilities (UUID, nanoid, alphanumeric, hex)
 
 ### Documentation & Examples
+
 - [x] Comprehensive README with API documentation
 - [x] Basic usage examples
 - [x] Benchmark suite
@@ -28,6 +31,7 @@ This document tracks the implementation progress and future enhancements for the
 ## ✅ Phase 2 - Additional Data Categories (COMPLETED)
 
 ### Food Module
+
 - [x] Implement Food module structure
 - [x] Food dishes (100+ dishes) - Expanded to 120+ dishes
 - [x] Ingredients (100+ ingredients) - Expanded to 150+ ingredients
@@ -39,6 +43,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Desserts
 
 ### Animal Module
+
 - [x] Implement Animal module structure
 - [x] Dogs (30+ breeds) - Expanded to 50+ breeds
 - [x] Cats (20+ breeds) - Expanded to 30+ breeds
@@ -50,6 +55,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Wild animals - Added 80+ wild animals
 
 ### Vehicle Module
+
 - [x] Implement Vehicle module structure
 - [x] Car manufacturers (50+ brands) - 42+ brands
 - [x] Car models (200+ models) - 50+ models
@@ -59,6 +65,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Motorcycle brands - Included in manufacturers
 
 ### Sport Module
+
 - [x] Implement Sport module structure
 - [x] Sport names (50+ sports) - 50+ sports
 - [x] Team names - 60+ team names
@@ -67,6 +74,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Positions/roles - 30+ positions
 
 ### Music Module
+
 - [x] Implement Music module structure
 - [x] Genres (50+ genres) - 50+ genres
 - [x] Artists (100+ artists) - 40+ artists
@@ -75,6 +83,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Music terms - Covered
 
 ### Book Module
+
 - [x] Implement Book module structure
 - [x] Book titles (100+ titles) - 40+ titles
 - [x] Authors (100+ authors) - 36+ authors
@@ -84,6 +93,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Book reviews/quotes - Dynamic generation
 
 ### Commerce Module
+
 - [x] Implement Commerce module structure
 - [x] Product names (200+ products) - 48+ base products
 - [x] Product adjectives - 30+ adjectives
@@ -93,6 +103,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Sizes - Can be added easily
 
 ### Word Module
+
 - [x] Implement Word module structure
 - [x] Adjectives (500+ adjectives) - Expanded to 500+ adjectives
 - [x] Adverbs (200+ adverbs) - Expanded to 200+ adverbs
@@ -103,6 +114,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Verbs (500+ verbs) - Expanded to 500+ verbs
 
 ### Hacker/Tech Module
+
 - [x] Implement Hacker module structure
 - [x] Tech abbreviations (API, HTTP, JSON, etc.) - 48+ abbreviations
 - [x] Tech adjectives - 20+ adjectives
@@ -112,6 +124,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Tech phrases/jargon - Dynamic generation
 
 ### System Module
+
 - [x] Implement System module structure
 - [x] File names - 20+ templates
 - [x] File extensions (100+ types) - 70+ extensions
@@ -120,6 +133,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Semantic versions - Dynamic generation
 
 ### Science Module
+
 - [x] Implement Science module structure
 - [x] Chemical elements (118 elements) - 60+ elements
 - [x] Units (metric, imperial) - 40+ units
@@ -130,6 +144,7 @@ This document tracks the implementation progress and future enhancements for the
 ## ✅ Phase 3 - Utility Modules (COMPLETED)
 
 ### Date Module
+
 - [x] Random dates in range - Timestamp generation
 - [x] Past dates - Can be generated
 - [x] Future dates - Can be generated
@@ -140,6 +155,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Date formatting - String formatting implemented
 
 ### Number Module
+
 - [x] Random integers in range - Fully implemented
 - [x] Random floats with precision - Implemented
 - [x] Random percentages - Implemented
@@ -148,6 +164,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Hexadecimal numbers - Implemented via hex()
 
 ### Color Module
+
 - [x] RGB colors - Implemented
 - [x] Hex colors - Implemented
 - [x] HSL colors - Can be added
@@ -155,6 +172,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] CSS colors - Implemented
 
 ### Finance Module
+
 - [x] Credit card numbers (with validation) - Luhn algorithm
 - [x] Credit card types (Visa, Mastercard, etc.) - Covered
 - [x] IBAN numbers - Implemented
@@ -167,6 +185,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Ethereum addresses - Implemented
 
 ### Database Module
+
 - [x] Column names - 30+ column names
 - [x] Table names - 24+ table names
 - [x] Database types (MySQL, PostgreSQL, etc.) - 15+ engines
@@ -175,6 +194,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Collation types - 9+ collations
 
 ### Git Module
+
 - [x] Commit messages - 20+ messages
 - [x] Commit SHAs - 40 char hex
 - [x] Branch names - 10+ branch types
@@ -182,12 +202,14 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Commit timestamps - Via date module
 
 ### Image Module
+
 - [x] Image URLs (placeholder services) - Implemented
 - [x] Image dimensions - Dynamic generation
 - [x] Image categories - Implemented
 - [x] Data URIs - Implemented
 
 ### Lorem Module
+
 - [x] Lorem ipsum words - Implemented
 - [x] Lorem ipsum sentences - Implemented
 - [x] Lorem ipsum paragraphs - Implemented
@@ -195,6 +217,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Slug generation - Can be added
 
 ### Helpers Module
+
 - [x] Array element picker (single) - faker.helpers.arrayElement()
 - [x] Array elements picker (multiple) - faker.helpers.arrayElements()
 - [x] Array unique elements picker - faker.helpers.arrayElementsUnique()
@@ -215,6 +238,7 @@ This document tracks the implementation progress and future enhancements for the
 ## ✅ Phase 4 - Locale Support (COMPLETE)
 
 ### Locale System Enhancements (COMPLETE)
+
 - [x] Locale fallback chain - `getLocaleFallbackChain()`
 - [x] Locale merging utilities - `mergeLocaleDefinitions()`
 - [x] Regional variants - en-US, en-GB implemented as examples
@@ -224,6 +248,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Available locales list - 27 base locales, 28 regional variants
 
 ### Base Locales (27 total) - COMPLETE
+
 - [x] **af** (Afrikaans) - Stub
 - [x] **ar** (Arabic) - Stub
 - [x] **az** (Azerbaijani) - Stub
@@ -253,6 +278,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] **zu** (Zulu) - Stub
 
 ### Regional Variants (28 total) - COMPLETE
+
 - [x] **af_ZA** (Afrikaans - South Africa)
 - [x] **de_AT** (German - Austria)
 - [x] **de_CH** (German - Switzerland)
@@ -283,6 +309,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] **zu_ZA** (Zulu - South Africa)
 
 ### Summary
+
 - **55 total locale files**: 27 base + 28 regional variants
 - **Matches ts-mocker locale list exactly** (excluding Russian per requirements)
 - All locales are loadable via `LocaleLoader`
@@ -294,6 +321,7 @@ This document tracks the implementation progress and future enhancements for the
 ## ✅ Phase 5 - Advanced Features (COMPLETE)
 
 ### Validation System
+
 - [x] Built-in validators (email, phone, URL, UUID, credit card, IPv4/IPv6, hex color, etc.) - 12+ validators
 - [x] Custom validation support with ValidatorFn
 - [x] Validation rules engine with ValidationRule
@@ -301,6 +329,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Integrated into main Faker struct
 
 ### Weighted Selection
+
 - [x] Weighted array element selection - Implemented in Helpers module
 - [x] Probability distributions - Normal distribution in Helpers
 - [x] Common name weights - Implemented with realistic frequency data
@@ -308,6 +337,7 @@ This document tracks the implementation progress and future enhancements for the
 - [x] Country distribution weights - Implemented with population-based weights
 
 ### Data Relationships
+
 - [ ] Related data generation
 - [ ] Family generation (consistent last names)
 - [ ] Neighborhood generation (same city/zip)
@@ -316,6 +346,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Postal code format by country
 
 ### Constraints System
+
 - [ ] Gender constraints
 - [ ] Country/region constraints
 - [ ] Age range constraints
@@ -323,6 +354,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Custom constraint functions
 
 ### Templates & Schemas
+
 - [ ] JSON schema support
 - [ ] Custom data templates
 - [ ] Batch generation from templates
@@ -331,6 +363,7 @@ This document tracks the implementation progress and future enhancements for the
 ## 🚧 Phase 6 - CLI Tool
 
 ### Command Line Interface
+
 - [ ] CLI structure and argument parsing
 - [ ] Generate single item: `zig-faker generate person firstName`
 - [ ] Generate multiple items: `zig-faker generate person firstName --count 10`
@@ -345,6 +378,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Template file support
 
 ### CLI Installation
+
 - [ ] Build as standalone executable
 - [ ] Installation script
 - [ ] Homebrew formula (macOS)
@@ -353,6 +387,7 @@ This document tracks the implementation progress and future enhancements for the
 ## 🚧 Phase 7 - Performance Optimizations
 
 ### Performance Enhancements
+
 - [ ] Optimize hot paths
 - [ ] Reduce allocations where possible
 - [ ] Cache frequently used values
@@ -363,6 +398,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Performance regression tests
 
 ### Advanced RNG
+
 - [ ] Alternative RNG algorithms (PCG, xoshiro, etc.)
 - [ ] Cryptographically secure option
 - [ ] RNG performance benchmarks
@@ -370,6 +406,7 @@ This document tracks the implementation progress and future enhancements for the
 ## 🚧 Phase 8 - Testing & Quality
 
 ### Test Coverage
+
 - [ ] Unit tests for all modules (100% coverage)
 - [ ] Integration tests
 - [ ] Property-based tests
@@ -378,6 +415,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Thread safety tests (if async added)
 
 ### Documentation
+
 - [ ] API documentation (doc comments)
 - [ ] Usage guides
 - [ ] Migration guides
@@ -388,12 +426,14 @@ This document tracks the implementation progress and future enhancements for the
 ## 🚧 Phase 9 - Advanced Use Cases
 
 ### Testing Utilities
+
 - [ ] Test fixture generation
 - [ ] Mock data factories
 - [ ] Snapshot testing support
 - [ ] Integration with testing frameworks
 
 ### API Mocking
+
 - [ ] REST API response generation
 - [ ] GraphQL response generation
 - [ ] JSON API format support
@@ -401,6 +441,7 @@ This document tracks the implementation progress and future enhancements for the
 ## 🎯 Future Considerations
 
 ### Experimental Features
+
 - [ ] AI-generated realistic data
 - [ ] Context-aware generation (e.g., realistic names for specific countries)
 - [ ] Data anonymization (replace real data with fake but realistic)
@@ -409,6 +450,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Incremental generation (resume from seed+offset)
 
 ### Ecosystem
+
 - [ ] Package manager support (launchpad, but defer this task, as in dont do it for now)
 - [ ] Integration examples (web frameworks, ORMs)
 - [ ] Community locale contributions
@@ -418,6 +460,7 @@ This document tracks the implementation progress and future enhancements for the
 ## 📊 Metrics & Goals
 
 ### Performance Targets (to match or exceed ts-mocker)
+
 - [ ] UUID generation: 20M+ ops/sec
 - [ ] Email generation: 10M+ ops/sec
 - [ ] Full name generation: 20M+ ops/sec
@@ -425,6 +468,7 @@ This document tracks the implementation progress and future enhancements for the
 - [ ] Binary size: < 500KB (static)
 
 ### Quality Targets
+
 - [ ] Test coverage: > 95%
 - [ ] Documentation coverage: 100%
 - [ ] Zero known memory leaks
@@ -433,6 +477,7 @@ This document tracks the implementation progress and future enhancements for the
 ## 🤝 Contributing
 
 Contributions are welcome! Pick any task from this TODO list and open a PR. Please:
+
 1. Add tests for new functionality
 2. Update documentation
 3. Follow existing code style

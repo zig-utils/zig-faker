@@ -237,6 +237,7 @@ faker.setLocale(&locales.es); // Switch to Spanish
 ### Available Locales (55 Total)
 
 **27 Base Locales:**
+
 - `af` (Afrikaans), `ar` (Arabic), `az` (Azerbaijani), `cs` (Czech), `da` (Danish)
 - `de` (German), `en` (English), `eo` (Esperanto), `es` (Spanish), `fa` (Persian)
 - `fi` (Finnish), `fr` (French), `he` (Hebrew), `hi` (Hindi), `it` (Italian)
@@ -245,6 +246,7 @@ faker.setLocale(&locales.es); // Switch to Spanish
 - `zh` (Chinese), `zu` (Zulu)
 
 **28 Regional Variants:**
+
 - **English (11)**: `en_US`, `en_GB`, `en_AU`, `en_CA`, `en_GH`, `en_HK`, `en_IE`, `en_IN`, `en_NG`, `en_ZA`
 - **German (3)**: `de_AT` (Austria), `de_CH` (Switzerland), `de_DE` (Germany)
 - **Spanish (2)**: `es_ES` (Spain), `es_MX` (Mexico)
@@ -254,6 +256,7 @@ faker.setLocale(&locales.es); // Switch to Spanish
 - **African (2)**: `af_ZA` (Afrikaans - South Africa), `zu_ZA` (Zulu - South Africa)
 
 All regional variants include localized:
+
 - City and state/province names
 - Postal code formats
 - Phone number formats
@@ -263,6 +266,7 @@ All regional variants include localized:
 ## Data Categories
 
 ### Person
+
 - First names (male, female, neutral)
 - Last names
 - Name prefixes/suffixes
@@ -270,6 +274,7 @@ All regional variants include localized:
 - Job titles
 
 ### Address
+
 - Street names and numbers
 - Cities, states, countries
 - Postal codes
@@ -277,6 +282,7 @@ All regional variants include localized:
 - Full addresses
 
 ### Company
+
 - Company names and suffixes
 - Industries
 - Business buzzwords
@@ -284,6 +290,7 @@ All regional variants include localized:
 - Catch phrases
 
 ### Internet
+
 - Email addresses (custom and free providers)
 - Domain names
 - URLs
@@ -291,9 +298,11 @@ All regional variants include localized:
 - Passwords
 
 ### Phone
+
 - Phone numbers (locale-specific formats)
 
 ### String Utilities
+
 - UUID v4 generation
 - Nanoid generation
 - Alphanumeric, alphabetic, numeric strings
@@ -563,4 +572,3 @@ defer allocator.free(slug);
 const text = try faker.lorem.text(100);       // ~100 characters of text
 defer allocator.free(text);
 ```
-

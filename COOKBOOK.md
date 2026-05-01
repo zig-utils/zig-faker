@@ -3,6 +3,7 @@
 Common recipes and patterns for generating realistic test data.
 
 ## Table of Contents
+
 1. [User Generation](#user-generation)
 2. [E-commerce Data](#e-commerce-data)
 3. [Blog & Content](#blog--content)
@@ -26,7 +27,7 @@ const User = struct {
     city: []const u8,
 };
 
-fn generateUser(faker: *Faker, allocator: std.mem.Allocator) !User {
+fn generateUser(faker: _Faker, allocator: std.mem.Allocator) !User {
     const first_name = faker.person.firstName(&faker.random, .{});
     const last_name = faker.person.lastName(&faker.random);
 
@@ -47,7 +48,7 @@ fn generateUser(faker: *Faker, allocator: std.mem.Allocator) !User {
 ### User with Realistic Age Distribution
 
 ```zig
-fn generateRealisticUser(faker: *Faker, allocator: std.mem.Allocator) !User {
+fn generateRealisticUser(faker: _Faker, allocator: std.mem.Allocator) !User {
     // Age follows normal distribution (mean: 35, std dev: 12)
     const raw_age = faker.helpers.normalDistribution(&faker.random, 35.0, 12.0);
     const age = @as(i32, @intFromFloat(faker.helpers.clamp(f64, raw_age, 18.0, 80.0)));
@@ -74,7 +75,7 @@ fn generateRealisticUser(faker: *Faker, allocator: std.mem.Allocator) !User {
 ```zig
 const UserRole = enum { admin, moderator, user, guest };
 
-fn generateUserWithRole(faker: *Faker) !struct {
+fn generateUserWithRole(faker: _Faker) !struct {
     user: User,
     role: UserRole
 } {
@@ -112,7 +113,7 @@ const Product = struct {
     tags: [][]const u8,
 };
 
-fn generateProduct(faker: *Faker) !Product {
+fn generateProduct(faker: _Faker) !Product {
     const product_name = try faker.commerce.productName(&faker.random);
     const price = faker.commerce.price(&faker.random, 10.0, 1000.0);
 
@@ -153,7 +154,7 @@ const OrderItem = struct {
     price: f64,
 };
 
-fn generateOrder(faker: *Faker, user_id: []const u8) !Order {
+fn generateOrder(faker: _Faker, user_id: []const u8) !Order {
     const statuses = [_][]const u8{ "pending", "processing", "shipped", "delivered" };
     const weights = [_]f64{ 0.10, 0.20, 0.30, 0.40 }; // Most orders are delivered
 
@@ -177,7 +178,7 @@ fn generateOrder(faker: *Faker, user_id: []const u8) !Order {
             .quantity = @intCast(quantity),
             .price = price,
         };
-        total += price * @as(f64, @floatFromInt(quantity));
+        total += price _ @as(f64, @floatFromInt(quantity));
     }
 
     return Order{
@@ -209,7 +210,7 @@ const BlogPost = struct {
     published_at: i64,
 };
 
-fn generateBlogPost(faker: *Faker) !BlogPost {
+fn generateBlogPost(faker: _Faker) !BlogPost {
     // Generate title from words
     const adj = faker.word.adjective(&faker.random);
     const noun1 = faker.word.noun(&faker.random);
@@ -256,7 +257,7 @@ const Comment = struct {
     created_at: i64,
 };
 
-fn generateCommentThread(faker: *Faker, post_id: []const u8, count: usize) ![]Comment {
+fn generateCommentThread(faker: _Faker, post_id: []const u8, count: usize) ![]Comment {
     var comments = try faker.allocator.alloc(Comment, count);
 
     for (0..count) |i| {
@@ -285,7 +286,7 @@ fn generateCommentThread(faker: *Faker, post_id: []const u8, count: usize) ![]Co
 ### Generate Multiple Records
 
 ```zig
-fn seedUsers(faker: *Faker, count: usize) ![]User {
+fn seedUsers(faker: _Faker, count: usize) ![]User {
     var users = try faker.allocator.alloc(User, count);
 
     for (0..count) |i| {
@@ -302,7 +303,7 @@ const users = try seedUsers(&faker, 100);
 ### Related Data Generation
 
 ```zig
-fn seedRelatedData(faker: *Faker) !void {
+fn seedRelatedData(faker: _Faker) !void {
     // Generate users
     const users = try seedUsers(faker, 50);
     defer faker.allocator.free(users);
@@ -336,7 +337,7 @@ const ApiResponse = struct {
     },
 };
 
-fn generateApiResponse(faker: *Faker, page: i32, per_page: i32) !ApiResponse {
+fn generateApiResponse(faker: _Faker, page: i32, per_page: i32) !ApiResponse {
     const users = try seedUsers(faker, @intCast(per_page));
 
     return ApiResponse{
@@ -354,7 +355,7 @@ fn generateApiResponse(faker: *Faker, page: i32, per_page: i32) !ApiResponse {
 ### Error Response Simulation
 
 ```zig
-fn generateErrorResponse(faker: *Faker) !struct {
+fn generateErrorResponse(faker: _Faker) !struct {
     status: i32,
     error: []const u8,
     message: []const u8,
@@ -395,7 +396,7 @@ fn generateErrorResponse(faker: *Faker) !struct {
 ### Age Groups
 
 ```zig
-fn generateByAgeGroup(faker: *Faker) !struct {
+fn generateByAgeGroup(faker: _Faker) !struct {
     person: []const u8,
     age: i32
 } {
@@ -428,7 +429,7 @@ fn generateByAgeGroup(faker: *Faker) !struct {
 ### Geographic Distribution
 
 ```zig
-fn generateByRegion(faker: *Faker) !struct {
+fn generateByRegion(faker: _Faker) !struct {
     name: []const u8,
     city: []const u8,
     state: []const u8,

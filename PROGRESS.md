@@ -2,14 +2,16 @@
 
 ## Latest Update: Extended Module Implementation 🎉
 
-I've significantly expanded the Zig Faker library with **6 new major modules**, bringing the total to **12 fully functional data generation modules**!
+I've significantly expanded the Zig Faker library with **6 new major modules**, bringing the total to**12 fully functional data generation modules**!
 
 ---
 
 ## New Modules Added ✨
 
 ### 1. **Food Module** 🍕
+
 Complete food data generation with:
+
 - **Dishes**: Pizza, Burger, Sushi, Pasta, Tacos, and 15+ more
 - **Ingredients**: Tomato, Onion, Garlic, and 20+ cooking ingredients
 - **Fruits**: Apple, Banana, Orange, and 20+ fruits
@@ -21,7 +23,9 @@ Complete food data generation with:
 **File**: `src/modules/food.zig`
 
 ### 2. **Animal Module** 🐕
+
 Animal breeds and species:
+
 - **Dogs**: 20+ breeds (Labrador, German Shepherd, Golden Retriever, etc.)
 - **Cats**: 15+ breeds (Persian, Maine Coon, Siamese, etc.)
 - **Birds**: 15+ species (Sparrow, Robin, Eagle, Parrot, etc.)
@@ -32,7 +36,9 @@ Animal breeds and species:
 **File**: `src/modules/animal.zig`
 
 ### 3. **Date Module** 📅
+
 Comprehensive date and time generation:
+
 - **Timestamps**: Random Unix timestamps between 2000-2030
 - **Past/Future Dates**: Generate dates within N days
 - **Recent/Soon**: Quick shortcuts for near dates (7 days)
@@ -45,7 +51,9 @@ Comprehensive date and time generation:
 **File**: `src/modules/date.zig`
 
 ### 4. **Number Module** 🔢
+
 Advanced number generation:
+
 - **Basic**: Random integers and floats in ranges
 - **Percentages**: With configurable precision
 - **Prime Numbers**: Random primes up to specified maximum
@@ -57,7 +65,9 @@ Advanced number generation:
 **File**: `src/modules/number.zig`
 
 ### 5. **Color Module** 🎨
+
 Complete color data in multiple formats:
+
 - **Color Names**: 60+ color names (Red, Blue, Turquoise, Crimson, etc.)
 - **CSS Colors**: 50+ CSS color names (aliceblue, antiquewhite, etc.)
 - **Hex Colors**: #RRGGBB format (e.g., "#FF5733")
@@ -70,7 +80,9 @@ Complete color data in multiple formats:
 **File**: `src/modules/color.zig`
 
 ### 6. **Lorem Module** 📝
+
 Lorem ipsum text generation:
+
 - **Words**: Single or multiple lorem ipsum words
 - **Sentences**: 10-20 words per sentence with proper capitalization
 - **Paragraphs**: 3-7 sentences per paragraph
@@ -86,6 +98,7 @@ Lorem ipsum text generation:
 ## Complete Module List (12 Total)
 
 ### Core Modules (Original - Phase 1)
+
 1. ✅ **Person** - Names, job titles, genders, prefixes, suffixes
 2. ✅ **Address** - Streets, cities, states, countries, postal codes
 3. ✅ **Company** - Company names, industries, buzzwords, catch phrases
@@ -94,6 +107,7 @@ Lorem ipsum text generation:
 6. ✅ **String** - UUID, nanoid, alphanumeric, hex strings
 
 ### New Modules (Phase 2 - Just Added)
+
 7. ✅ **Food** - Dishes, ingredients, fruits, vegetables, meats, spices
 8. ✅ **Animal** - Dog/cat breeds, bird/fish species, pet names
 9. ✅ **Date** - Timestamps, date/time strings, ISO 8601
@@ -106,18 +120,21 @@ Lorem ipsum text generation:
 ## Statistics
 
 ### Data Coverage
+
 - **Total Modules**: 12
 - **Total Functions**: 100+
 - **Data Entries**: 10,000+ (across all locales)
 - **Test Coverage**: 14 comprehensive test suites
 
 ### Code Stats
+
 - **Total Lines**: ~3,500+
 - **Module Files**: 12
 - **Locale Files**: 1 (English with 8,000+ entries)
 - **Test Cases**: 14 (all passing)
 
 ### Features Implemented
+
 - ✅ Seeded random generation
 - ✅ Locale system with English locale
 - ✅ Type-safe Zig API
@@ -144,7 +161,7 @@ pub fn main() !void {
     // Original modules
     const name = try faker.person.fullName(.{});
     defer allocator.free(name);
-    
+
     const email = try faker.internet.email();
     defer allocator.free(email);
 
@@ -160,14 +177,14 @@ pub fn main() !void {
     // NEW: Date module
     const date = try faker.date.dateString();
     defer allocator.free(date);
-    
+
     const iso_date = try faker.date.iso8601();
     defer allocator.free(iso_date);
 
     // NEW: Number module
     const prime = faker.number.prime(100);
     const percentage = faker.number.percentage(2);
-    
+
     const binary = try faker.number.binary(8);
     defer allocator.free(binary);
 
@@ -175,14 +192,14 @@ pub fn main() !void {
     const color = faker.color.name();
     const hex = try faker.color.hex();
     defer allocator.free(hex);
-    
+
     const rgb = try faker.color.rgb();
     defer allocator.free(rgb);
 
     // NEW: Lorem module
     const paragraph = try faker.lorem.paragraph();
     defer allocator.free(paragraph);
-    
+
     const slug = try faker.lorem.slug(5);
     defer allocator.free(slug);
 }
@@ -193,18 +210,21 @@ pub fn main() !void {
 ## Architecture Improvements
 
 ### Memory Management
+
 - All dynamic allocations properly tracked
 - Consistent use of `defer` for cleanup
 - Clear distinction between const and allocated strings
 - Arena allocator friendly
 
 ### Modularity
+
 - Each module is independent and focused
 - Clean separation of concerns
 - Easy to add new modules
 - Locale-aware where applicable
 
 ### Testing
+
 - Comprehensive test suite for all modules
 - Seeded tests for reproducibility
 - Memory leak checking via std.testing.allocator
@@ -215,6 +235,7 @@ pub fn main() !void {
 ## Comparison with ts-mocker
 
 ### Implemented from ts-mocker
+
 - ✅ Person data (100%)
 - ✅ Address data (100%)
 - ✅ Company data (100%)
@@ -229,6 +250,7 @@ pub fn main() !void {
 - ✅ Lorem ipsum (100% - NEW)
 
 ### Still To Implement (from TODO.md)
+
 - ⏳ Vehicle module (cars, motorcycles, bicycles)
 - ⏳ Sport module (sports, teams, athletes)
 - ⏳ Music module (genres, artists, songs)
@@ -249,18 +271,21 @@ pub fn main() !void {
 ## Next Steps
 
 ### Immediate Priorities
+
 1. **Fix Zig 0.15 Compatibility**: Update std library API usage
 2. **Add More Locales**: Spanish, French, German implementations
 3. **Performance Benchmarking**: Measure against ts-mocker targets
 4. **Add Remaining Modules**: Vehicle, Sport, Music, Book, etc.
 
 ### Medium-Term Goals
+
 - CLI tool for command-line data generation
 - Advanced features (validation, weighted selection, constraints)
 - More comprehensive English locale data
 - Additional regional locale variants
 
 ### Long-Term Vision
+
 - 25+ data modules (matching ts-mocker)
 - 20+ locale support
 - Performance parity or better than ts-mocker
@@ -271,12 +296,14 @@ pub fn main() !void {
 ## Performance Considerations
 
 ### Current Optimizations
+
 - Direct array indexing (no spreading)
 - Efficient RNG with seeding
 - Minimal allocations where possible
 - Lazy evaluation patterns
 
 ### Performance Goals (from ts-mocker)
+
 - UUID generation: 20M+ ops/sec (target)
 - Email generation: 10M+ ops/sec (target)
 - Name generation: 20M+ ops/sec (target)
@@ -286,11 +313,12 @@ pub fn main() !void {
 
 ## Conclusion
 
-**The Zig Faker library has doubled in size and capability!** 
+**The Zig Faker library has doubled in size and capability!**
 
 With 12 comprehensive modules now available, the library provides a robust foundation for generating realistic fake data in Zig applications. The architecture is clean, the API is intuitive, and the test coverage is comprehensive.
 
 The next phase will focus on:
+
 1. Completing the remaining ts-mocker modules
 2. Adding multi-locale support
 3. Performance optimization and benchmarking
@@ -301,6 +329,7 @@ The next phase will focus on:
 ---
 
 **Files Modified in This Update:**
+
 - `src/faker.zig` - Added 6 new module imports and integration
 - `src/modules/food.zig` - NEW
 - `src/modules/animal.zig` - NEW

@@ -7,6 +7,7 @@ Successfully refactored the entire zig-faker library to eliminate dangling point
 ## What Was Changed
 
 ### Architecture Change
+
 **Before:** Modules stored a pointer to Random (`random: *Random`), which became invalid when the Faker struct was moved/copied.
 
 **After:** Modules NO LONGER store Random pointers. Instead, `random: *Random` is passed as a parameter to each method call.
@@ -21,26 +22,32 @@ Successfully refactored the entire zig-faker library to eliminate dangling point
 ## Changes by Component
 
 ### Random Module (`src/random.zig`)
+
 - Removed the `rng` field (only kept `prng`)
 - All methods now call `self.prng.random()` directly
 
 ### All 25 Module Files
+
 **Modules Refactored:**
+
 - address, animal, book, color, commerce, company, database, date, finance, food, git, hacker, image, internet, lorem, music, number, person, phone, science, sport, string, system, vehicle, word
 
 **Changes to Each:**
+
 1. Removed `random: *Random` field from struct
 2. Updated `init()` to NOT take `random` parameter
 3. Added `random: *Random` as FIRST parameter (after self) to ALL public methods except `init()`
 4. Replaced `self.random` with `random` parameter throughout
 
 ### Faker Struct (`src/faker.zig`)
+
 - Module initialization no longer passes `&faker.random`
 - Updated all 104+ test method calls to pass `&faker.random` as parameter
 
 ## API Changes
 
 ### Before (Old API)
+
 ```zig
 var faker = Faker.init(allocator, 12345, null);
 const name = faker.person.firstName(.{});
@@ -48,6 +55,7 @@ const city = faker.address.city();
 ```
 
 ### After (New API)
+
 ```zig
 var faker = Faker.init(allocator, 12345, null);
 const name = faker.person.firstName(&faker.random, .{});
@@ -59,6 +67,7 @@ const city = faker.address.city(&faker.random);
 ## Test Results
 
 ✅ **ALL 28 TESTS PASS** including:
+
 - ✅ faker initialization
 - ✅ random module seeding (NEW - now works!)
 - ✅ faker with seed (NEW - deterministic output!)
@@ -76,6 +85,7 @@ For users upgrading from previous version:
 2. That's it!
 
 Example migrations:
+
 ```zig
 // Before
 faker.person.firstName(.{ .gender = .male })
@@ -91,6 +101,7 @@ faker.string.uuid(&faker.random)
 ## Technical Details
 
 The issue was that when `Faker.init()` returns, the entire struct is copied to the caller's stack frame. This means:
+
 - `faker.random` (the Random struct) moves to a new memory address
 - But `faker.person.random` still pointed to the OLD address (inside `init()`)
 - Result: Dangling pointer → undefined behavior

@@ -38,6 +38,7 @@
 ## Known Issues
 
 ### 1. Seeding Test (Commented Out)
+
 The seeding functionality has been temporarily disabled in tests due to Zig 0.15.1's PRNG pointer semantics. The Random struct stores a `DefaultPrng` by value, and when `.random()` is called, it returns an interface with a pointer to the PRNG. This causes issues with deterministic output.
 
 **Status:** Non-critical - faker still generates data correctly, just not deterministically with seeds
@@ -45,6 +46,7 @@ The seeding functionality has been temporarily disabled in tests due to Zig 0.15
 **Workaround:** For now, the library works perfectly for generating random test data. Seeding support may require refactoring the Random struct architecture.
 
 ### 2. std.io API Changes
+
 The examples and benchmarks use `std.io.getStdOut()` which doesn't exist in Zig 0.15.1.
 
 **Status:** Non-critical - core library is unaffected

@@ -171,7 +171,7 @@ Generate multiple items at once:
 
 ```zig
 // Define a generator function
-fn generateEmail(random: *Random) []const u8 {
+fn generateEmail(random: _Random) []const u8 {
     // Your email generation logic
     return "user@example.com";
 }
@@ -235,7 +235,7 @@ const User = struct {
     tags: [][]const u8,
 };
 
-fn generateRealisticUser(faker: *Faker, allocator: std.mem.Allocator) !User {
+fn generateRealisticUser(faker: _Faker, allocator: std.mem.Allocator) !User {
     // Age with normal distribution (mean: 35, std dev: 12)
     const raw_age = faker.helpers.normalDistribution(&faker.random, 35.0, 12.0);
     const age = @as(i32, @intFromFloat(faker.helpers.clamp(f64, raw_age, 18.0, 80.0)));
@@ -317,6 +317,7 @@ const result2 = faker.helpers.weightedArrayElement(
 ## Summary
 
 The Helpers module provides:
+
 - ✅ 15+ utility functions
 - ✅ Statistical distributions (normal/Gaussian)
 - ✅ Weighted selection for realistic data
