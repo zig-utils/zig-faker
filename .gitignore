@@ -2,3 +2,4 @@
 test_build/
 zig-out/
 *.sh
+pantry
